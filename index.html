@@ -7,18 +7,20 @@
 
 <style>
 body {
+  margin: 0;
   font-family: sans-serif;
   background: linear-gradient(135deg, #ffd6ec, #ffc0cb);
   display: flex;
   justify-content: center;
-  padding: 40px;
+  padding: 20px;
   overflow-x: hidden;
   transition: 0.5s;
 }
 
+/* กล่องหลัก */
 .box {
-  background: rgba(255,255,255,0.85);
-  backdrop-filter: blur(15px);
+  background: rgba(255,255,255,0.9);
+  backdrop-filter: blur(12px);
   padding: 20px;
   border-radius: 25px;
   max-width: 420px;
@@ -27,17 +29,20 @@ body {
   box-shadow: 0 8px 25px rgba(255,182,193,0.3);
 }
 
+/* หัวข้อ */
 h2 {
   background: linear-gradient(90deg, #ff9ad5, #ffb6f9);
-  padding: 15px;
+  padding: 12px;
   border-radius: 20px;
   color: white;
+  font-size: 18px;
 }
 
+/* ปุ่ม */
 button {
   display: block;
   width: 100%;
-  margin: 12px 0;
+  margin: 10px 0;
   padding: 14px;
   border-radius: 999px;
   border: none;
@@ -46,11 +51,11 @@ button {
   font-weight: bold;
 }
 
-button:hover {
-  transform: scale(1.05);
+button:active {
+  transform: scale(0.96);
 }
 
-/* glitter */
+/* ✨ glitter ตอนกด */
 .sparkle {
   position: fixed;
   width: 8px;
@@ -63,7 +68,20 @@ button:hover {
   100% {transform: scale(2);opacity:0;}
 }
 
-/* rainbow */
+/* 💖 อิโมจิลอย */
+.floating {
+  position: fixed;
+  font-size: 18px;
+  pointer-events: none;
+  animation: floatUp linear forwards;
+}
+@keyframes floatUp {
+  0% {transform: translateY(100vh); opacity:0;}
+  20% {opacity:1;}
+  100% {transform: translateY(-10vh); opacity:0;}
+}
+
+/* 🌈 rainbow */
 .rainbow-bg {
   background: linear-gradient(270deg, red, orange, yellow, green, blue, indigo, violet);
   background-size: 1400% 1400%;
@@ -75,16 +93,6 @@ button:hover {
   100% {background-position:0% 50%;}
 }
 
-/* float */
-.float {
-  animation: float 2s infinite ease-in-out;
-}
-@keyframes float {
-  0%{transform:translateY(0)}
-  50%{transform:translateY(-8px)}
-  100%{transform:translateY(0)}
-}
-
 /* glow */
 .glow {
   animation: glow 2s infinite alternate;
@@ -93,131 +101,81 @@ button:hover {
   from {text-shadow:0 0 10px white;}
   to {text-shadow:0 0 25px gold;}
 }
-</style>
-  .floating {
-  position: fixed;
-  font-size: 20px;
-  pointer-events: none;
-  animation: floatUp linear forwards;
-  opacity: 0.8;
-}
 
-@keyframes floatUp {
-  0% {
-    transform: translateY(100vh) scale(0.8);
-    opacity: 0;
-  }
-  20% {
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(-10vh) scale(1.3);
-    opacity: 0;
-  }
+.float {
+  animation: float 2s infinite ease-in-out;
 }
+@keyframes float {
+  0%{transform:translateY(0)}
+  50%{transform:translateY(-8px)}
+  100%{transform:translateY(0)}
+}
+</style>
 </head>
 
 <body>
 <div class="box" id="app"></div>
 
 <script>
-// glitter
+// ✨ glitter
 function spawnGlitter(x,y){
   const colors=["#fff","#ffd6ec","#ffe08a","#caffff","#e0bbff"];
-  for(let i=0;i<15;i++){
+  for(let i=0;i<12;i++){
     let d=document.createElement("div");
     d.className="sparkle";
-    d.style.left=x+(Math.random()*60-30)+"px";
-    d.style.top=y+(Math.random()*60-30)+"px";
+    d.style.left=x+(Math.random()*50-25)+"px";
+    d.style.top=y+(Math.random()*50-25)+"px";
     d.style.background=colors[Math.floor(Math.random()*colors.length)];
     document.body.appendChild(d);
     setTimeout(()=>d.remove(),1000);
   }
 }
 
-// QUESTIONS (ตัวเต็มของนายทั่น)
+// 💖 อิโมจิลอยพื้นหลัง
+function spawnFloating(){
+  const emojis=["✨","💖","⭐","🌸","💫","🫧"];
+  let e=document.createElement("div");
+  e.className="floating";
+  e.innerText=emojis[Math.floor(Math.random()*emojis.length)];
+  e.style.left=Math.random()*100+"vw";
+  e.style.animationDuration=(3+Math.random()*3)+"s";
+  document.body.appendChild(e);
+  setTimeout(()=>e.remove(),5000);
+}
+setInterval(spawnFloating,500);
+
+// 📊 QUESTIONS
 const questions = [
-
 {q:"1. ระหว่างทางเดินไปโรงเรียน คุณคิดว่าคุณจะเจออะไร",a:[
-["สาวคาบขนมปัง","star"],
-["อาจารย์โหด","sun"],
-["หมาป่าใส่ฮู้ด","shadow"],
-["เพื่อนน่ารัก","bl"],
-["ถนน","normal"]
+["สาวคาบขนมปัง","star"],["อาจารย์โหด","sun"],["หมาป่าใส่ฮู้ด","shadow"],["เพื่อนน่ารัก","bl"],["ถนน","normal"]
 ]},
-
 {q:"2. ตอนเข้าห้องแล้วต้องเลือกที่นั่ง คุณจะนั่งกับใคร",a:[
-["คนเดียว","normal"],
-["คนที่ดูเชื่อถือได้","sun"],
-["สุ่ม ๆ ไปสักคนน่ะแหละ","star"],
-["เพื่อนเก่า","bl"],
-["ตรงไหนก็ได้ขอแค่หลังห้องริมหน้าต่าง","shadow"]
+["คนเดียว","normal"],["คนที่ดูเชื่อถือได้","sun"],["สุ่ม ๆ ไปสักคนน่ะแหละ","star"],["เพื่อนเก่า","bl"],["หลังห้องริมหน้าต่าง","shadow"]
 ]},
-
-{q:"3. คาบแรกจบไป มีคนมาชวนคุณไปกินข้าวจะไปไหม",a:[
-["หึ","shadow"],
-["ไปสิครับ","sun"],
-["ไม่เป็นไรไปก็ได้แล้วแต่","normal"],
-["ก็ได้ค่ะ เริ่ดนะ","star"],
-["ไปดิ","bl"]
+{q:"3. มีคนชวนกินข้าว",a:[
+["หึ","shadow"],["ไปสิครับ","sun"],["แล้วแต่","normal"],["เริ่ดนะ","star"],["ไปดิ","bl"]
 ]},
-
-{q:"4. คุณทำพวงกุญแจรักตกลงในกองดิน",a:[
-["ยืนเฉย ๆ รอโชคชะตา","bl"],
-["คุ้ยหาเอง","normal"],
-["คนแถวนี้ช่วยหนูหน่อยค่า","star"],
-["เก็บคนเดียวเสร็จ ปาดเหงื่อมองกล้องสามยิ้มสดใส","sun"],
-["ออกมาน้า!!!","shadow"]
+{q:"4. ของตก",a:[
+["ยืนเฉย ๆ","bl"],["เก็บเอง","normal"],["ขอช่วย","star"],["ยิ้มแล้วเก็บ","sun"],["ตะโกน","shadow"]
 ]},
-
-{q:"5. คุณเห็นเพื่อนโดนแกล้ง",a:[
-["มอง ก็แค่มองละนินทาเม้ากันรู้ทั้งโรงเรียน","star"],
-["อย่าไปยุ่งดีกว่า วุ่นวาย","normal"],
-["หึ จะทำอะไร เดินไปต่อย","shadow"],
-["เดินเข้าไปห้าม อย่าแกล้งกันนะ อยู่ด้วยกันสงบดีกว่า","sun"],
-["อยากแกล้งก็มาแกล้งฉันซะสิ","bl"]
+{q:"5. เพื่อนโดนแกล้ง",a:[
+["เม้า","star"],["ไม่ยุ่ง","normal"],["ต่อย","shadow"],["ห้าม","sun"],["ช่วยเอง","bl"]
 ]},
-
-{q:"6. มีคนชวนคุณไปทำการบ้านด้วยกัน",a:[
-["ไม่ว่าง ขอทำคนเดียว","shadow"],
-["โอเค","normal"],
-["ได้สิ มาช่วยกันทำนะ !","sun"],
-["โอเคเลย แต่แป๊บน้า ขอเซลฟี่ก่อน","star"],
-["ได้อยู่แล้ว เพื่อเธอ","bl"]
+{q:"6. ทำการบ้าน",a:[
+["คนเดียว","shadow"],["โอเค","normal"],["ช่วยกัน","sun"],["เซลฟี่ก่อน","star"],["เพื่อเธอ","bl"]
 ]},
-
-{q:"7. เพื่อนชวนคุณไปเที่ยวหลังเลิกเรียน",a:[
-["ยังไม่ชวนอยู่บ้านซะแล้ว","shadow"],
-["เกะไหม โฟโต้อิสสึ่มไหม คาเฟ่เริ่ด","star"],
-["อาจจะยัง วันนี้เหนื่อย","normal"],
-["ได้หมดเลย ไปไหนกันดีล่ะ!","sun"],
-["เธออยากไปไหน ฉันพร้อม","bl"]
+{q:"7. ไปเที่ยว",a:[
+["อยู่บ้าน","shadow"],["คาเฟ่","star"],["พัก","normal"],["ไปหมด","sun"],["ไปกับเธอ","bl"]
 ]},
-
-{q:"8. เพื่อนขอแลกไอจี",a:[
-["ฉันไม่เล่นไอจี","shadow"],
-["ได้ดิ","normal"],
-["ดี ๆๆ เริ่ดนะ เพิ่มยอดฟอลให้ด้วยน้า","star"],
-["ครับ แต่อาจจะไม่ได้เล่นเท่าไหร่นะ","sun"],
-["เดมมานะ กริ๊ง","bl"]
+{q:"8. แลกไอจี",a:[
+["ไม่เล่น","shadow"],["ได้","normal"],["เพิ่มฟอล","star"],["ไม่ค่อยเล่น","sun"],["เดมมา","bl"]
 ]},
-
-{q:"9. ครูไม่อยู่ห้อง",a:[
-["ไลฟ์สด สวัสดีโซเชี่ยล","star"],
-["นั่งทำงาน","normal"],
-["หลับแต่แอบมอง","shadow"],
-["คุยกับเพื่อนเฮฮา","sun"],
-["แทรกตัวกับผู้คนโปรยคำหวาน","bl"]
+{q:"9. ครูไม่อยู่",a:[
+["ไลฟ์","star"],["ทำงาน","normal"],["หลับ","shadow"],["คุย","sun"],["หวาน","bl"]
 ]},
-
-{q:"10. ถ้ามีคนแอบชอบคุณ",a:[
-["เปิดตัวเลยสิซิส นี่ค่ะแฟนฉัน","star"],
-["เฉย ๆ ขอบคุณ","normal"],
-["หึ ขอบใจ ไปละกัน","shadow"],
-["คุยดี ๆ ขอบคุณนะครับ เราอาจจะยังไม่ได้ชอบเธอ","sun"],
-["หวานครับ จัดเธียร์ เปิดตัวเลย","bl"]
+{q:"10. มีคนชอบ",a:[
+["เปิดตัว","star"],["เฉย ๆ","normal"],["หึ","shadow"],["คุยก่อน","sun"],["เป็นแฟนเลย","bl"]
 ]}
-
 ];
 
 let scores={star:0,sun:0,shadow:0,bl:0,normal:0};
@@ -235,27 +193,7 @@ let btn=document.createElement("button");
 btn.innerText=choice[0];
 
 btn.onclick=(e)=>{
-let x=e.clientX||300;
-let y=e.clientY||300;
-spawnGlitter(x,y);
-  function spawnFloating(){
-  const emojis = ["✨","💖","⭐","🌸","💫","🫧","🌟"];
-  
-  let e = document.createElement("div");
-  e.className = "floating";
-  e.innerText = emojis[Math.floor(Math.random()*emojis.length)];
-  
-  e.style.left = Math.random()*100 + "vw";
-  e.style.animationDuration = (3 + Math.random()*3) + "s";
-
-  document.body.appendChild(e);
-
-  setTimeout(()=>e.remove(),5000);
-}
-
-// ยิงเรื่อย ๆ
-setInterval(spawnFloating, 400);
-
+spawnGlitter(e.clientX||200,e.clientY||200);
 scores[choice[1]]++;
 current++;
 setTimeout(render,200);
@@ -265,7 +203,7 @@ app.appendChild(btn);
 });
 
 }else{
-showResult();setInterval(()=>spawnFloating(),100);
+showResult();
 }
 }
 
@@ -273,17 +211,11 @@ function showResult(){
 let max=Object.keys(scores).reduce((a,b)=>scores[a]>scores[b]?a:b);
 
 const results={
-
-star:{text:`<img src="https://cdn3.emoji.gg/emojis/149268-pinkyellowstarstwinkle.gif" width="64" class="float"><br>◇ ดาวหกแฉก ◇<br>คุณเป็นดาวเด่น ค้ำฟ้า เพราะสร้างด้วยตัวเอง ยอดฟอลไอจีเกือบจะเป็นลิซ่าไม่รู้ว่าปั้นยอดมาแค่ไหนแต่เรียกได้ว่าเป็นอินฟลูสายเม้าท์ฉ่ำ`,color:"#FFD700",glow:true},
-
-sun:{text:`<img src="https://cdn3.emoji.gg/emojis/3776_Sunshine.gif" width="64" class="float"><br>◇ พี่โชนของทุกคน ◇<br>คุณทำให้โรงเรียนสงบและน่าอยู่ขึ้น ใจดีและน่าประทับใจ คุณเด่นคุณดัง ไม่ว่าจะตรงไหนคนก็ชอบคุณ`,color:"#87CEFA",glow:true},
-
-shadow:{text:`<img src="https://cdn3.emoji.gg/emojis/8524-batman-cloak.png" width="64" class="float"><br>◇ ข้าขอเป็นเงา อะตอมมิค ◇<br>เบียวกับอินโทรเวิทมีเส้นคั่นที่หนาตึ้บ แต่คุณน่ะ ไม่ได้เบียวแค่เป็นส่วนเดียวกับความมืด โลกก็แบบนี้ คุณพึ่งตัวเองไฟนอลบอส โหด`,color:"#1a001f",glow:false},
-
-bl:{text:`<img src="https://cdn3.emoji.gg/emojis/135457-rainbowheart.gif" width="64" class="float"><br>◇ ดาราวาย ◇<br>เคมีระเบิด เสิร์ฟเก่ง ทุกคนเก็ท ปากหวาน เสยผม กล้องสามกล้องสี่กล้องห้าจับคุณหมดละหันเจอหมด ครับสุดสวย`,color:"rainbow",glow:true},
-
-normal:{text:`<img src="https://cdn3.emoji.gg/emojis/97521-goldenpray.png" width="64" class="float"><br>◇ แค่คนธรรมดา ◇<br>ในโลกวุ่นวายคุณเป็นคนธรรมดาที่แทบจะปลงกับทุกอย่าง ขออยู่คนเดียว ไม่เอาใครแล้ว เหมือน npc แต่เพราะมีคุณโลกเลยดำเนินได้`,color:"#4CAF50",glow:false}
-
+star:{text:`⭐ ดาวหกแฉก<br>อินฟลูสายเม้าท์ฉ่ำ`,color:"#FFD700"},
+sun:{text:`☀️ พี่โชนของทุกคน<br>ใจดี น่ารัก`,color:"#87CEFA"},
+shadow:{text:`🌑 เงาอะตอมมิค<br>สายดาร์ค`,color:"#1a001f"},
+bl:{text:`🌈 ดาราวาย<br>เสิร์ฟเก่ง`,color:"rainbow"},
+normal:{text:`🌿 คนธรรมดา<br>อินโทรเวิท`,color:"#4CAF50"}
 };
 
 document.body.classList.remove("rainbow-bg");
@@ -296,11 +228,9 @@ document.body.style.background=results[max].color;
 
 document.body.style.color=(max==="shadow")?"white":"black";
 
-let glow=results[max].glow?"glow":"";
-
 document.getElementById("app").innerHTML=
-`<h2 class="${glow}">ผลลัพธ์ของคุณ</h2>
-<p class="${glow}">${results[max].text}</p>
+`<h2>ผลลัพธ์ของคุณ</h2>
+<p>${results[max].text}</p>
 <button onclick="location.reload()">เล่นใหม่</button>`;
 }
 
