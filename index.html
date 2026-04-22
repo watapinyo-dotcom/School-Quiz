@@ -9,12 +9,19 @@
 body{
   margin:0;
   font-family:sans-serif;
-  background:linear-gradient(135deg,#ffd6ec,#ffc0cb);
+  /* พื้นหลังกราเดี้ยนเคลื่อนไหวช้า ๆ */
+  background:linear-gradient(-45deg,#ffd6ec,#ffc0cb,#ff9ad5,#ffd6ec);
+  background-size:400% 400%;
+  animation:gradientShift 15s ease infinite;
   display:flex;
   justify-content:center;
   padding:20px;
   overflow:hidden;
   position:relative;
+}
+@keyframes gradientShift{
+  0%,100%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
 }
 
 .box{
@@ -33,19 +40,20 @@ h2,h3{margin:0 0 20px 0;color:#333;}
 h3{font-size:1.3em;}
 p{font-size:1.1em;line-height:1.5;}
 
-/* ปุ่ม */
+/* ปุ่มกราเดี้ยน */
 button{
   width:100%;
   margin:10px 0;
   padding:14px;
   border-radius:999px;
   border:none;
-  background:white;
+  background:linear-gradient(180deg,hotpink,#fff);
   font-weight:bold;
   font-size:16px;
   box-shadow:0 4px 15px rgba(0,0,0,0.1);
   cursor:pointer;
   transition:0.2s;
+  color:#333;
 }
 button:hover{transform:translateY(-2px);}
 button:active{transform:scale(0.96);}
@@ -92,22 +100,37 @@ button:active{transform:scale(0.96);}
   opacity:0.8;
 }
 
-/* progress */
-.progress{
-  background:#eee;
-  height:8px;
-  border-radius:10px;
-  margin:8px 0;
+/* Progress bars - ซ้าย + หัวข้อสวย */
+.progress-row{
+  display:flex;
+  align-items:center;
+  margin:12px 0;
+  text-align:left;
+}
+.progress-label{
+  font-weight:bold;
+  min-width:60px;
+  margin-right:12px;
+  font-size:14px;
+}
+.progress-container{
+  flex:1;
+  background:#f0f0f0;
+  height:10px;
+  border-radius:12px;
   overflow:hidden;
+  box-shadow:inset 0 2px 4px rgba(0,0,0,0.1);
 }
 .progress-fill{
   height:100%;
   transition:width 0.8s ease-out;
+  border-radius:12px;
 }
 
 /* Responsive */
 @media (max-width:480px){
   .box{padding:15px;padding-bottom:80px;}
+  .progress-row{font-size:14px;}
 }
 </style>
 </head>
@@ -165,7 +188,7 @@ function resultFX(type){
   }
 }
 
-// ❓ questions - 11 ข้อใหม่ล่าสุด!
+// ❓ questions - 11 ข้อ
 const questions=[
 {q:"1. ระหว่างทางเดินไปโรงเรียน คุณคิดว่าคุณจะเจออะไร",a:[["สาวคาบขนมปัง","star"],["อาจารย์สุดโหด","sun"],["หมาป่าใส่ฮู้ด","shadow"],["เพื่อนสมัยเด็กน่ารัก","bl"],["ถนน","normal"]]},
 {q:"2. เลือกที่นั่งของคุณ",a:[["คนเดียว","normal"],["คนที่ดูพึ่งได้","sun"],["สุ่ม กับใครนั่งก็เริ่ด","star"],["เพื่อนเก่า","bl"],["หลังห้อง ริมหน้าต่าง","shadow"]]},
@@ -180,13 +203,13 @@ const questions=[
 {q:"11. งานกลุ่ม",a:[["ไม่มีใครเอาเข้ากลุ่ม...?","shadow"],["เล่นบ้างจริงจังบ้าง","star"],["คุณและผองเพื่อน งานกลุ่มแบบเดี่ยว","normal"],["หลีดเดอร์ ช่วยเหลือ น่าเชื่อถือ","sun"],["เดี๋ยวแอบทำส่วนของคนที่ชอบให้","bl"]]}
 ];
 
-// 🎯 results
+// 🎯 results + สีใหม่
 const results={
-star:{text:"◇ ดาวหกแฉก ◇<br>คุณเป็นดาวเด่น ค้ำฟ้า เพราะสร้างด้วยตัวเอง ยอดฟอลไอจีเกือบจะเป็นลิซ่า",emoji:"⭐",color:"#FFD700"},
-sun:{text:"◇ พี่โชนของทุกคน ◇<br>คุณทำให้โรงเรียนสงบและน่าอยู่ขึ้น ใจดีและน่าประทับใจ",emoji:"☀️",color:"#87CEFA"},
-shadow:{text:"◇ ข้าขอเป็นเงา อะตอมมิค ◇<br>เบียวกับอินโทรเวิท คุณพึ่งตัวเองไฟนอลบอส โหด",emoji:"🦇",color:"#6a0dad"},
-bl:{text:"◇ ดาราวาย ◇<br>เคมีระเบิด เสิร์ฟเก่ง ทุกคนเก็ท ปากหวาน ครับสุดสวย",emoji:"🌈",color:"rainbow"},
-normal:{text:"◇ แค่คนธรรมดา ◇<br>ในโลกวุ่นวายคุณเป็นคนธรรมดา เหมือน npc แต่เพราะมีคุณโลกเลยดำเนินได้",emoji:"🙏",color:"#4CAF50"}
+star:{text:"◇ ดาวหกแฉก ◇<br>คุณเป็นดาวเด่น ค้ำฟ้า เพราะสร้างด้วยตัวเอง ยอดฟอลไอจีเกือบจะเป็นลิซ่า",emoji:"⭐",color:"linear-gradient(180deg,hotpink,#fff)"},
+sun:{text:"◇ พี่โชนของทุกคน ◇<br>คุณทำให้โรงเรียนสงบและน่าอยู่ขึ้น ใจดีและน่าประทับใจ",emoji:"☀️",color:"linear-gradient(180deg,#ffe066,#fff)"},
+shadow:{text:"◇ ข้าขอเป็นเงา อะตอมมิค ◇<br>เบียวกับอินโทรเวิท คุณพึ่งตัวเองไฟนอลบอส โหด",emoji:"🦇",color:"linear-gradient(180deg,#000,#f44)"},
+bl:{text:"◇ ดาราวาย ◇<br>เคมีระเบิด เสิร์ฟเก่ง ทุกคนเก็ท ปากหวาน ครับสุดสวย",emoji:"🌈",color:"linear-gradient(90deg,red,orange,yellow,green,blue,violet)"},
+normal:{text:"◇ แค่คนธรรมดา ◇<br>ในโลกวุ่นวายคุณเป็นคนธรรมดา เหมือน npc แต่เพราะมีคุณโลกเลยดำเนินได้",emoji:"🙏",color:"linear-gradient(180deg,#4CAF50,#fff)"}
 };
 
 let scores={star:0,sun:0,shadow:0,bl:0,normal:0};
@@ -201,6 +224,7 @@ app.innerHTML=`<h3>${q.q}</h3>`;
 q.a.forEach(c=>{
 let b=document.createElement("button");
 b.innerText=c[0];
+b.style.background=results.star.color; // ปุ่ม hotpink gradient
 b.onclick=(e)=>{
 sparkle(e.clientX,e.clientY);
 scores[c[1]]++;
@@ -224,14 +248,38 @@ app.innerHTML=`
 <div style="margin:25px 0;">
 <h4 style="margin:0 0 15px 0;">📊 คะแนนของคุณ:</h4>
 
-<div>⭐ ${scores.star}<div class="progress"><div class="progress-fill" style="width:${bar(scores.star)}%;background:#FFD700;"></div></div></div>
-<div>☀️ ${scores.sun}<div class="progress"><div class="progress-fill" style="width:${bar(scores.sun)}%;background:#87CEFA;"></div></div></div>
-<div>🦇 ${scores.shadow}<div class="progress"><div class="progress-fill" style="width:${bar(scores.shadow)}%;background:#6a0dad;"></div></div></div>
-<div>🌈 ${scores.bl}<div class="progress"><div class="progress-fill" style="width:${bar(scores.bl)}%;background:linear-gradient(90deg,red,orange,yellow,green,blue,violet);"></div></div></div>
-<div>🙏 ${scores.normal}<div class="progress"><div class="progress-fill" style="width:${bar(scores.normal)}%;background:#4CAF50;"></div></div></div>
+<div class="progress-row">
+<span class="progress-label">⭐</span>
+<span style="flex:1;font-weight:bold;">${scores.star}</span>
+<div class="progress-container"><div class="progress-fill" style="width:${bar(scores.star)}%;background:#FFD700;"></div></div>
 </div>
 
-<button onclick="location.reload()" style="background:#ff6b9d;color:white;font-size:18px;">🎮 เล่นใหม่</button>
+<div class="progress-row">
+<span class="progress-label">☀️</span>
+<span style="flex:1;font-weight:bold;">${scores.sun}</span>
+<div class="progress-container"><div class="progress-fill" style="width:${bar(scores.sun)}%;background:#87CEFA;"></div></div>
+</div>
+
+<div class="progress-row">
+<span class="progress-label">🦇</span>
+<span style="flex:1;font-weight:bold;">${scores.shadow}</span>
+<div class="progress-container"><div class="progress-fill" style="width:${bar(scores.shadow)}%;background:#6a0dad;"></div></div>
+</div>
+
+<div class="progress-row">
+<span class="progress-label">🌈</span>
+<span style="flex:1;font-weight:bold;">${scores.bl}</span>
+<div class="progress-container"><div class="progress-fill" style="width:${bar(scores.bl)}%;background:linear-gradient(90deg,red,orange,yellow,green,blue,violet);"></div></div>
+</div>
+
+<div class="progress-row">
+<span class="progress-label">🙏</span>
+<span style="flex:1;font-weight:bold;">${scores.normal}</span>
+<div class="progress-container"><div class="progress-fill" style="width:${bar(scores.normal)}%;background:#4CAF50;"></div></div>
+</div>
+</div>
+
+<button onclick="location.reload()" style="background:linear-gradient(180deg,#ff6b9d,#ff9ad5);color:white;font-size:18px;">🎮 เล่นใหม่</button>
 `;
 }
 }
