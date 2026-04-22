@@ -1,58 +1,40 @@
+<!-- test -->
 <!DOCTYPE html>
 <html lang="th">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#ffd6ec">
 <title>คุณเป็นใครในโรงเรียนนี้?</title>
 
 <style>
 body{
   margin:0;
   font-family:sans-serif;
-  /* พื้นหลังเริ่มต้น */
-  background:linear-gradient(-45deg,#ffd6ec,#ffc0cb,#ff9ad5,#f8b8d0);
-  background-size:600% 600%;
-  animation:gradientShift 20s ease infinite;
+  background:linear-gradient(135deg,#ffd6ec,#ffc0cb);
   display:flex;
   justify-content:center;
   padding:20px;
   overflow:hidden;
-  transition:background 2s ease;
+  height:100vh;
 }
-@keyframes gradientShift{
-  0%,100%{background-position:0% 50%;}
-  25%{background-position:100% 50%;}
-  50%{background-position:100% 100%;}
-  75%{background-position:0% 100%;}
-}
-
-.result-star{ background:linear-gradient(-45deg,hotpink,#fff) !important; }
-.result-sun{ background:linear-gradient(-45deg,#ffe066,#fff) !important; }
-.result-shadow{ background:linear-gradient(-45deg,#000,#f44) !important; }
-.result-bl{ background:linear-gradient(90deg,red,orange,yellow,green,blue,violet) !important; }
-.result-normal{ background:linear-gradient(-45deg,#4CAF50,#fff) !important; }
 
 .box{
-  background:rgba(255,255,255,0.97);
+  background:rgba(255,255,255,0.95);
   padding:20px;
-  padding-bottom:90px;
   border-radius:25px;
   max-width:420px;
   width:100%;
   text-align:center;
-  position:relative;
-  z-index:2;
+  max-height:90vh;
+  overflow-y:auto;
   backdrop-filter:blur(10px);
-  transition:all 2s ease;
 }
-
-.result-box{ background:rgba(255,255,255,0.15) !important; }
 
 h2,h3{margin:0 0 20px 0;color:#333;}
 h3{font-size:1.3em;}
 p{font-size:1.1em;line-height:1.5;}
 
-/* ปุ่มขาว */
 button{
   width:100%;
   margin:10px 0;
@@ -60,161 +42,139 @@ button{
   border-radius:999px;
   border:none;
   background:white;
+  cursor:pointer;
   font-weight:bold;
   font-size:16px;
-  box-shadow:0 6px 20px rgba(0,0,0,0.15);
-  cursor:pointer;
-  transition:0.3s;
-  color:#333;
+  box-shadow:0 4px 15px rgba(0,0,0,0.1);
+  transition:0.2s;
 }
-button:hover{transform:translateY(-3px) scale(1.02);}
-button:active{transform:scale(0.97);}
 
-/* sparkle */
+button:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.15);}
+button:active{transform:scale(0.96);}
+
+/* ✨ sparkle */
 .sparkle{
   position:fixed;
-  width:10px;height:10px;
+  width:8px;
+  height:8px;
   border-radius:50%;
   animation:pop 1s forwards;
   pointer-events:none;
-  z-index:10;
+  z-index:999;
 }
 @keyframes pop{
-  0%{opacity:1;transform:scale(0.3);}
-  100%{opacity:0;transform:scale(2.5);}
+  0%{opacity:1;transform:scale(0.5);}
+  100%{opacity:0;transform:scale(2);}
 }
 
-/* ลอย */
-.float{
+/* 🌟 floating stars */
+.floating-star{
   position:fixed;
-  animation:up linear forwards;
+  font-size:18px;
   pointer-events:none;
+  animation:floatUp linear forwards;
+  opacity:0.8;
   z-index:1;
-  font-size:22px;
 }
-@keyframes up{
+
+@keyframes floatUp{
   0%{transform:translateY(100vh) scale(0.8);opacity:0;}
   20%{opacity:1;}
-  100%{transform:translateY(-30vh) scale(1.3);opacity:0;}
+  100%{transform:translateY(-10vh) scale(1.3);opacity:0;}
 }
 
+/* 🌈 rainbow */
+@keyframes rainbow{
+  0%{background-position:0%}
+  50%{background-position:100%}
+  100%{background-position:0%}
 }
 
 /* Progress bars */
-.progress-row{
-  display:flex;
-  align-items:center;
+.progress-bar{
   margin:15px 0;
   text-align:left;
-  padding:10px;
-  background:rgba(255,255,255,0.5);
-  border-radius:15px;
 }
-.progress-label{
-  font-size:24px;
-  min-width:45px;
-  margin-right:15px;
-}
-.progress-score{
-  font-weight:bold;
-  font-size:16px;
-  min-width:30px;
-  margin-right:15px;
-  color:#333;
-}
-.progress-container{
-  flex:1;
-  background:rgba(0,0,0,0.1);
-  height:12px;
-  border-radius:15px;
-  overflow:hidden;
-  box-shadow:inset 0 2px 5px rgba(0,0,0,0.1);
-}
-.progress-fill{
-  height:100%;
-  transition:width 1s cubic-bezier(0.25,0.46,0.45,0.94);
-  border-radius:15px;
+.progress-bar div{
+  height:8px;
+  border-radius:10px;
+  transition:0.8s ease-out;
 }
 
 /* Responsive */
-@media (max-width:480px){
-  .box{padding:15px;padding-bottom:85px;}
+@media (max-width: 480px) {
+  .box { padding:15px; margin:10px; }
+  button { padding:12px; }
+  h3 { font-size:1.2em; }
 }
 </style>
 </head>
 
 <body>
-
 <div class="box" id="app"></div>
-<div class="footer">
-<img src="https://img1.pic.in.th/images/._20260422_195132_0000.th.png">
-</div>
 
 <script>
-// ลอยต่อเนื่อง
-setInterval(()=>{
-  let e=document.createElement("div");
-  e.className="float";
-  e.innerText=["✨","⭐","💫","🌸"][Math.floor(Math.random()*4)];
-  e.style.left=Math.random()*100+"vw";
-  e.style.animationDuration=(4+Math.random()*4)+"s";
-  document.body.appendChild(e);
-  setTimeout(()=>e.remove(),6000);
-},350);
+// ⭐ floating stars
+function spawnStar(){
+  const stars=["⭐","✨","💫","🌟","🫧","🌸"];
+  let s=document.createElement("div");
+  s.className="floating-star";
+  s.innerText=stars[Math.floor(Math.random()*stars.length)];
+  s.style.left=Math.random()*100+"vw";
+  s.style.animationDuration=(3+Math.random()*3)+"s";
+  document.body.appendChild(s);
+  setTimeout(()=>s.remove(),5000);
+}
+setInterval(spawnStar,400);
 
-// sparkle
+// ✨ sparkle click
 function sparkle(x,y){
-  for(let i=0;i<12;i++){
+  for(let i=0;i<10;i++){
     let d=document.createElement("div");
     d.className="sparkle";
-    d.style.left=(x+Math.random()*60-30)+"px";
-    d.style.top=(y+Math.random()*60-30)+"px";
-    d.style.background=["#ff69b4","#ffd700","#87cefa"][Math.floor(Math.random()*3)];
+    d.style.left=x+"px";
+    d.style.top=y+"px";
+    d.style.background=["#fff","#ff9ad5","#ffe08a"][Math.floor(Math.random()*3)];
     document.body.appendChild(d);
-    setTimeout(()=>d.remove(),1000);
+    setTimeout(()=>d.remove(),800);
   }
 }
 
-// result FX + เปลี่ยนพื้นหลัง
-function resultFX(type){
-  const map={
-    star:["⭐","✨","🌟","💖"],
-    sun:["☀️","💛","✨","🌞"],
-    shadow:["🦇","🌑","💀"],
-    bl:["🌈","💖","💕","❤️"],
-    normal:["🌱","🍃","🙏","🌿"]
-  };
-  
-  // เปลี่ยนพื้นหลัง + class
-  document.body.className=`result-${type}`;
-  document.querySelector('.box').className='box result-box';
-  
-  for(let i=0;i<25;i++){
-    let e=document.createElement("div");
-    e.className="float";
-    e.innerText=map[type][Math.floor(Math.random()*map[type].length)];
-    e.style.left=Math.random()*100+"vw";
-    e.style.animationDuration="4s";
-    document.body.appendChild(e);
-    setTimeout(()=>e.remove(),4000);
-  }
-}
-
-// คำถาม 11 ข้อ
-const questions=[
-{q:"1. ระหว่างทางเดินไปโรงเรียน คุณคิดว่าคุณจะเจออะไร",a:[["สาวคาบขนมปัง","star"],["อาจารย์สุดโหด","sun"],["หมาป่าใส่ฮู้ด","shadow"],["เพื่อนสมัยเด็กน่ารัก","bl"],["ถนน","normal"]]},
-{q:"2. เลือกที่นั่งของคุณ",a:[["คนเดียว","normal"],["คนที่ดูพึ่งได้","sun"],["สุ่ม กับใครนั่งก็เริ่ด","star"],["เพื่อนเก่า","bl"],["หลังห้อง ริมหน้าต่าง","shadow"]]},
-{q:"3. มีคนชวนกินข้าว",a:[["หึ","shadow"],["ไปสิครับ","sun"],["ไม่เป็นไรไปก็ได้แล้วแต่","normal"],["ก็ได้ค่ะ เริ่ดนะ","star"],["ไปดิ","bl"]]},
-{q:"4. ของตก",a:[["ยืนเฉย ๆ รอโชคชะตา","bl"],["เก็บเอง","normal"],["ขอความช่วยเหลือ","star"],["ยิ้มแล้วคุ้ยหาของ","sun"],["ตะโกนสุดเสียง","shadow"]]},
-{q:"5. เพื่อนโดนแกล้ง",a:[["เม้าแฟ่ด รู้ทั้งจังหวัด ลงทุกแฟลตฟอร์ม","star"],["ไม่ยุ่งดีกว่า วุ่นวาย","normal"],["ต่อยเลยละกัน หึ","shadow"],["ห้ามแล้วยิ้มให้ไม่เอาความรุนแรง","sun"],["มาหาฉันฉันจะช่วยเอง","bl"]]},
-{q:"6. เพื่อนชวนทำการบ้าน",a:[["คนเดียว หึ","shadow"],["โอเค","normal"],["ช่วยกันนะ","sun"],["เซลฟี่ก็สวยอะ มุมนี้สวย ไว้ก่อนน้า","star"],["เพื่อเธอทำได้ทุกอย่าง","bl"]]},
-{q:"7. เพื่อนชวนไปเที่ยว",a:[["อยู่บ้านนานแล้ว แอบเสียใจ","shadow"],["คาเฟ่ไหม ถ่ายรูปไหม รรรเริ่ดด","star"],["ขอพักนะเหนื่อย","normal"],["ไปหมดครับ ชอบอยู่กับเพื่อน","sun"],["เธอเลือกเลย ไปทุกที่ที่มีเธอ","bl"]]},
-{q:"8. แลกไอจี",a:[["ไม่เล่น แอบใช้รูปคาเนกิ","shadow"],["ได้ดิ","normal"],["ว้ายยยยยยยยยยยยยย","star"],["ครับแต่ไม่ค่อยได้เล่นนะ","sun"],["ฟอลแล้วเดมมา เดมมา","bl"]]},
-{q:"9. ครูไม่อยู่",a:[["ไลฟ์หน่อย สวัสดีโซเชี่ยลแคม","star"],["นั่งทำงาน","normal"],["หลับแต่แอบมอง","shadow"],["คุยกับเพื่อนเฮฮา","sun"],["แทรกตัวกับผู้คนโปรยคำหวาน","bl"]]},
-{q:"10. มีคนมาชอบ",a:[["เปิดตัวเลยไหม","star"],["เอ่อ..ขอบคุณ","normal"],["ยัยบ๊อง พ..พ..พูดอะไรเนี่ย ให้ตายเถอะ ฉันไม่ได้ชอบเธอแต่..รู้จัก..เห้ย ไม่ได้สิ","shadow"],["ขอบคุณนะ แต่เรามารู้จักกันก่อนดีไหม","sun"],["เราลองเป็นแฟนกันเลยได้ไหม ก็เพราะฉันเป็นคนไม่คุย คุยไม่เป๋น","bl"]]},
-{q:"11. งานกลุ่ม",a:[["ไม่มีใครเอาเข้ากลุ่ม...?","shadow"],["เล่นบ้างจริงจังบ้าง","star"],["คุณและผองเพื่อน งานกลุ่มแบบเดี่ยว","normal"],["หลีดเดอร์ ช่วยเหลือ น่าเชื่อถือ","sun"],["เดี๋ยวแอบทำส่วนของคนที่ชอบให้","bl"]]}
+// 📌 QUESTIONS
+const questions = [
+{q:"1. ระหว่างทางเดินไปโรงเรียน คุณคิดว่าคุณจะเจออะไร",a:[
+["สาวคาบขนมปัง","star"],["อาจารย์โหด","sun"],["หมาป่าใส่ฮู้ด","shadow"],["เพื่อนน่ารัก","bl"],["ถนน","normal"]
+]},
+{q:"2. เลือกที่นั่งของคุณ",a:[
+["คนเดียว","normal"],["คนดูดี","sun"],["สุ่ม","star"],["เพื่อนเก่า","bl"],["หลังห้อง","shadow"]
+]},
+{q:"3. มีคนชวนกินข้าว",a:[
+["หึ","shadow"],["ไปสิครับ","sun"],["ไม่เป็นไรไปก็ได้แล้วแต่","normal"],["ก็ได้ค่ะ เริ่ดนะ","star"],["ไปดิ","bl"]
+]},
+{q:"4. ของตก",a:[
+["ยืนเฉย ๆ รอโชคชะตา","bl"],["เก็บเอง","normal"],["ขอความช่วยเหลือ","star"],["ยิ้มแล้วคุ้ยหาของ","sun"],["ตะโกนสุดเสียง","shadow"]
+]},
+{q:"5. เพื่อนโดนแกล้ง",a:[
+["เม้าแฟ่ด รู้ทั้งจังหวัด ลงทุกแฟลตฟอร์ม","star"],["ไม่ยุ่งดีกว่า วุ่นวาย","normal"],["ต่อยเลยละกัน หึ","shadow"],["ห้ามแล้วยิ้มให้ไม่เอาความรุนแรง","sun"],["มาหาฉันฉันจะช่วยเอง","bl"]
+]},
+{q:"6. เพื่อนชวนทำการบ้าน",a:[
+["คนเดียว หึ","shadow"],["โอเค","normal"],["ช่วยกันนะ","sun"],["เซลฟี่ก็สวยอะ","star"],["เพื่อเธอทำได้ทุกอย่าง","bl"]
+]},
+{q:"7. เพื่อนชวนไปเที่ยว",a:[
+["อยู่บ้านนานแล้ว","shadow"],["คาเฟ่ไหม ถ่ายรูปไหม รรรเริ่ดด","star"],["ขอพักนะเหนื่อย","normal"],["ไปหมดครับ ชอบอยู่กับเพื่อน","sun"],["เธอเลือกเลย ไปทุกที่ที่มีเธอ","bl"]
+]},
+{q:"8. แลกไอจี",a:[
+["ไม่เล่น","shadow"],["ได้ดิ","normal"],["ว้ายยยยยยยยยยยยยย","star"],["ครับแต่ไม่ค่อยได้เล่นนะ","sun"],["เดมมา เดมมา","bl"]
+]},
+{q:"9. ครูไม่อยู่",a:[
+["ไลฟ์หน่อย สวัสดีโซเชี่ยลแคม","star"],["นั่งทำงาน","normal"],["หลับแต่แอบมอง","shadow"],["คุยกับเพื่อนเฮฮา","sun"],["แทรกตัวกับผู้คนโปรยคำหวาน","bl"]
+]},
+{q:"10. มีคนมาชอบ",a:[
+["เปิดตัวเลยสิซิส นี่ค่ะแฟนฉัน","star"],["เฉย ๆ ขอบคุณ","normal"],["หึ ขอบใจ ไปละกัน","shadow"],["คุยดี ๆ ขอบคุณนะครับ เราอาจจะยังไม่ได้ชอบเธอแต่รู้จักกันไปก่อนนะ","sun"],["หวานครับ จัดเธียร์ เปิดตัวเลยครับ เราลองเป็นแฟนกันเลยได้ไหมเพราะฉันมันเป็นคนไม่คุยคุยไม่เป็น","bl"]
+]}
 ];
 
+// 🎯 RESULTS + Emoji
 const results = {
   star: {
     text: "◇ ดาวหกแฉก ◇<br>คุณเป็นดาวเด่น ค้ำฟ้า เพราะสร้างด้วยตัวเอง ยอดฟอลไอจีเกือบจะเป็นลิซ่าไม่รู้ปั้นมาจากไหน",
@@ -237,6 +197,7 @@ const results = {
     emoji: "🙏"
   }
 };
+
 let scores={star:0,sun:0,shadow:0,bl:0,normal:0};
 let current=0;
 
@@ -246,185 +207,75 @@ let app=document.getElementById("app");
 if(current<questions.length){
 let q=questions[current];
 app.innerHTML=`<h3>${q.q}</h3>`;
-q.a.forEach(c=>{
-let b=document.createElement("button");
-b.innerText=c[0];
-b.onclick=(e)=>{
+
+q.a.forEach(choice=>{
+let btn=document.createElement("button");
+btn.innerText=choice[0];
+btn.onclick=(e)=>{
 sparkle(e.clientX,e.clientY);
-scores[c[1]]++;
+scores[choice[1]]++;
 current++;
 render();
 };
-app.appendChild(b);
+app.appendChild(btn);
 });
+
 }else{
-  let max = Object.keys(scores).reduce((a,b)=>scores[a]>scores[b]?a:b);
-  resultFX(max);
+let max = Object.keys(scores).reduce((a,b)=>scores[a]>scores[b]?a:b);
+const total = questions.length;
+const bar = (s) => (s / total) * 100;
 
-  const total = questions.length;
-  const bar = s => (s / total) * 100;
-
-  app.innerHTML = `
-    <div class="result-page">
-      <div class="result-card">
-        <h2 class="result-title">ผลลัพธ์ของคุณ</h2>
-
-        <div class="result-emoji">${results[max].emoji}</div>
-
-        <h3 class="result-name">${results[max].text.split("<br>")[0]}</h3>
-        <p class="result-desc">${results[max].text.split("<br>")[1]}</p>
-
-        <div class="score-title">คะแนนของคุณ:</div>
-
-        <div class="progress-row">
-          <span class="progress-label">⭐ ดาว ${scores.star}</span>
-          <div class="progress-container">
-            <div class="progress-fill star" style="width:${bar(scores.star)}%"></div>
-          </div>
-        </div>
-
-        <div class="progress-row">
-          <span class="progress-label">☀️ พี่โชน ${scores.sun}</span>
-          <div class="progress-container">
-            <div class="progress-fill sun" style="width:${bar(scores.sun)}%"></div>
-          </div>
-        </div>
-
-        <div class="progress-row">
-          <span class="progress-label">🦇 เงา ${scores.shadow}</span>
-          <div class="progress-container">
-            <div class="progress-fill shadow" style="width:${bar(scores.shadow)}%"></div>
-          </div>
-        </div>
-
-        <div class="progress-row">
-          <span class="progress-label">🌈 ดาราวาย ${scores.bl}</span>
-          <div class="progress-container">
-            <div class="progress-fill bl" style="width:${bar(scores.bl)}%"></div>
-          </div>
-        </div>
-
-        <div class="progress-row">
-          <span class="progress-label">🙏 คนธรรมดา ${scores.normal}</span>
-          <div class="progress-container">
-            <div class="progress-fill normal" style="width:${bar(scores.normal)}%"></div>
-          </div>
-        </div>
-
-        <button class="restart-btn" onclick="location.reload()">🎮 เล่นใหม่</button>
-      </div>
-    </div>
-  `;
-}
-  .result-page{
-  min-height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  padding:12px;
-  box-sizing:border-box;
+if(results[max].color==="rainbow"){
+document.body.style.background="linear-gradient(270deg,red,orange,yellow,green,blue,violet)";
+document.body.style.backgroundSize="400% 400%";
+document.body.style.animation="rainbow 5s infinite";
+}else{
+document.body.style.background=results[max].color;
 }
 
-.result-card{
-  width:100%;
-  max-width:390px;
-  max-height:92vh;
-  overflow-y:auto;
-  background:rgba(255,255,255,0.96);
-  border-radius:30px;
-  padding:18px 16px 20px;
-  text-align:center;
-  box-sizing:border-box;
-  backdrop-filter:blur(10px);
+app.innerHTML=`
+<h2>ผลลัพธ์ของคุณ</h2>
+${results[max].html}
+
+<div style="margin-top:20px;">
+<h4 style="text-align:left;margin:0 0 10px 0">คะแนนของคุณ:</h4>
+<div class="progress-bar">
+⭐ ดาว ${scores.star}
+<div style="background:#eee;height:8px;border-radius:10px;margin-top:5px">
+<div style="width:${bar(scores.star)}%;height:100%;background:#FFD700;border-radius:10px"></div>
+</div></div>
+
+<div class="progress-bar">
+☀️ พี่โชน ${scores.sun}
+<div style="background:#eee;height:8px;border-radius:10px;margin-top:5px">
+<div style="width:${bar(scores.sun)}%;height:100%;background:#87CEFA;border-radius:10px"></div>
+</div></div>
+
+<div class="progress-bar">
+🦇 เงา ${scores.shadow}
+<div style="background:#eee;height:8px;border-radius:10px;margin-top:5px">
+<div style="width:${bar(scores.shadow)}%;height:100%;background:#6a0dad;border-radius:10px"></div>
+</div></div>
+
+<div class="progress-bar">
+🌈 ดาราวาย ${scores.bl}
+<div style="background:#eee;height:8px;border-radius:10px;margin-top:5px">
+<div style="width:${bar(scores.bl)}%;height:100%;background:linear-gradient(90deg,red,orange,yellow,green,blue,violet);border-radius:10px"></div>
+</div></div>
+
+<div class="progress-bar">
+🙏 คนธรรมดา ${scores.normal}
+<div style="background:#eee;height:8px;border-radius:10px;margin-top:5px">
+<div style="width:${bar(scores.normal)}%;height:100%;background:#4CAF50;border-radius:10px"></div>
+</div></div>
+</div>
+
+<button onclick="location.reload()" style="background:#ff6b9d;color:white;margin-top:20px;">🎮 เล่นใหม่</button>
+`;
+}
 }
 
-.result-title{
-  margin:0 0 10px;
-  font-size:22px;
-  color:#222;
-}
-
-.result-emoji{
-  font-size:62px;
-  margin:8px 0 8px;
-}
-
-.result-name{
-  margin:0 0 8px;
-  font-size:20px;
-  color:#333;
-}
-
-.result-desc{
-  margin:0 0 18px;
-  font-size:15px;
-  line-height:1.55;
-  color:#222;
-}
-
-.score-title{
-  text-align:left;
-  font-weight:bold;
-  margin:10px 0 8px;
-  color:#222;
-}
-
-.progress-row{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  margin:10px 0;
-  text-align:left;
-}
-
-.progress-label{
-  min-width:90px;
-  font-size:14px;
-  font-weight:600;
-  color:#333;
-}
-
-.progress-container{
-  flex:1;
-  background:#eaeaea;
-  height:8px;
-  border-radius:999px;
-  overflow:hidden;
-}
-
-.progress-fill{
-  height:100%;
-  border-radius:999px;
-}
-
-.progress-fill.star{
-  background:linear-gradient(90deg,hotpink,#fff);
-}
-
-.progress-fill.sun{
-  background:linear-gradient(90deg,#ffe066,#fff);
-}
-
-.progress-fill.shadow{
-  background:linear-gradient(90deg,#000,#f44);
-}
-
-.progress-fill.bl{
-  background:linear-gradient(90deg,red,orange,yellow,green,blue,violet);
-}
-
-.progress-fill.normal{
-  background:linear-gradient(90deg,#4CAF50,#fff);
-}
-
-.restart-btn{
-  width:100%;
-  margin-top:18px;
-  padding:14px;
-  border:none;
-  border-radius:999px;
-  background:linear-gradient(180deg,#ff5ca8,#ff87bf);
-  color:white;
-  font-size:18px;
-  font-weight:bold;
-}
+render();
+</script>
+</body>
+</html>
