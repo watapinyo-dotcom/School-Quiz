@@ -9,14 +9,15 @@
 body{
   margin:0;
   font-family:sans-serif;
-  /* พื้นหลังเคลื่อนไหวช้า */
-  background:linear-gradient(-45deg,#ffd6ec,#ffc0cb,#ff9ad5,#f8b8d0,#ffd6ec);
+  /* พื้นหลังเริ่มต้น */
+  background:linear-gradient(-45deg,#ffd6ec,#ffc0cb,#ff9ad5,#f8b8d0);
   background-size:600% 600%;
   animation:gradientShift 20s ease infinite;
   display:flex;
   justify-content:center;
   padding:20px;
   overflow:hidden;
+  transition:background 2s ease;
 }
 @keyframes gradientShift{
   0%,100%{background-position:0% 50%;}
@@ -24,6 +25,12 @@ body{
   50%{background-position:100% 100%;}
   75%{background-position:0% 100%;}
 }
+
+.result-star{ background:linear-gradient(-45deg,hotpink,#fff) !important; }
+.result-sun{ background:linear-gradient(-45deg,#ffe066,#fff) !important; }
+.result-shadow{ background:linear-gradient(-45deg,#000,#f44) !important; }
+.result-bl{ background:linear-gradient(90deg,red,orange,yellow,green,blue,violet) !important; }
+.result-normal{ background:linear-gradient(-45deg,#4CAF50,#fff) !important; }
 
 .box{
   background:rgba(255,255,255,0.97);
@@ -36,24 +43,29 @@ body{
   position:relative;
   z-index:2;
   backdrop-filter:blur(10px);
+  transition:all 2s ease;
 }
+
+.result-box{ background:rgba(255,255,255,0.15) !important; }
 
 h2,h3{margin:0 0 20px 0;color:#333;}
 h3{font-size:1.3em;}
 p{font-size:1.1em;line-height:1.5;}
 
-/* ปุ่ม */
+/* ปุ่มขาว */
 button{
   width:100%;
   margin:10px 0;
   padding:14px;
   border-radius:999px;
   border:none;
+  background:white;
   font-weight:bold;
   font-size:16px;
   box-shadow:0 6px 20px rgba(0,0,0,0.15);
   cursor:pointer;
   transition:0.3s;
+  color:#333;
 }
 button:hover{transform:translateY(-3px) scale(1.02);}
 button:active{transform:scale(0.97);}
@@ -151,7 +163,7 @@ button:active{transform:scale(0.97);}
 </div>
 
 <script>
-// ⭐ ลอยต่อเนื่อง
+// ลอยต่อเนื่อง
 setInterval(()=>{
   let e=document.createElement("div");
   e.className="float";
@@ -162,7 +174,7 @@ setInterval(()=>{
   setTimeout(()=>e.remove(),6000);
 },350);
 
-// ✨ sparkle
+// sparkle
 function sparkle(x,y){
   for(let i=0;i<12;i++){
     let d=document.createElement("div");
@@ -175,7 +187,7 @@ function sparkle(x,y){
   }
 }
 
-// 🎯 result FX
+// result FX + เปลี่ยนพื้นหลัง
 function resultFX(type){
   const map={
     star:["⭐","✨","🌟","💖"],
@@ -184,6 +196,11 @@ function resultFX(type){
     bl:["🌈","💖","💕","❤️"],
     normal:["🌱","🍃","🙏","🌿"]
   };
+  
+  // เปลี่ยนพื้นหลัง + class
+  document.body.className=`result-${type}`;
+  document.querySelector('.box').className='box result-box';
+  
   for(let i=0;i<25;i++){
     let e=document.createElement("div");
     e.className="float";
@@ -195,7 +212,7 @@ function resultFX(type){
   }
 }
 
-// ❓ คำถาม 11 ข้อ
+// คำถาม 11 ข้อ
 const questions=[
 {q:"1. ระหว่างทางเดินไปโรงเรียน คุณคิดว่าคุณจะเจออะไร",a:[["สาวคาบขนมปัง","star"],["อาจารย์สุดโหด","sun"],["หมาป่าใส่ฮู้ด","shadow"],["เพื่อนสมัยเด็กน่ารัก","bl"],["ถนน","normal"]]},
 {q:"2. เลือกที่นั่งของคุณ",a:[["คนเดียว","normal"],["คนที่ดูพึ่งได้","sun"],["สุ่ม กับใครนั่งก็เริ่ด","star"],["เพื่อนเก่า","bl"],["หลังห้อง ริมหน้าต่าง","shadow"]]},
@@ -210,13 +227,12 @@ const questions=[
 {q:"11. งานกลุ่ม",a:[["ไม่มีใครเอาเข้ากลุ่ม...?","shadow"],["เล่นบ้างจริงจังบ้าง","star"],["คุณและผองเพื่อน งานกลุ่มแบบเดี่ยว","normal"],["หลีดเดอร์ ช่วยเหลือ น่าเชื่อถือ","sun"],["เดี๋ยวแอบทำส่วนของคนที่ชอบให้","bl"]]}
 ];
 
-// 🎯 results - GRADIENT ตามที่ขอ
 const results={
-star:{text:"◇ ดาวหกแฉก ◇<br>คุณเป็นดาวเด่น ค้ำฟ้า เพราะสร้างด้วยตัวเอง ยอดฟอลไอจีเกือบจะเป็นลิซ่า",emoji:"⭐",color:"linear-gradient(180deg,hotpink,#fff)"},
-sun:{text:"◇ พี่โชนของทุกคน ◇<br>คุณทำให้โรงเรียนสงบและน่าอยู่ขึ้น ใจดีและน่าประทับใจ",emoji:"☀️",color:"linear-gradient(180deg,#ffe066,#fff)"},
-shadow:{text:"◇ ข้าขอเป็นเงา อะตอมมิค ◇<br>เบียวกับอินโทรเวิท คุณพึ่งตัวเองไฟนอลบอส โหด",emoji:"🦇",color:"linear-gradient(180deg,#000,#f44)"},
-bl:{text:"◇ ดาราวาย ◇<br>เคมีระเบิด เสิร์ฟเก่ง ทุกคนเก็ท ปากหวาน ครับสุดสวย",emoji:"🌈",color:"linear-gradient(90deg,red,orange,yellow,green,blue,violet)"},
-normal:{text:"◇ แค่คนธรรมดา ◇<br>ในโลกวุ่นวายคุณเป็นคนธรรมดา เหมือน npc แต่เพราะมีคุณโลกเลยดำเนินได้",emoji:"🙏",color:"linear-gradient(180deg,#4CAF50,#fff)"}
+star:{text:"◇ ดาวหกแฉก ◇<br>คุณเป็นดาวเด่น ค้ำฟ้า เพราะสร้างด้วยตัวเอง ยอดฟอลไอจีเกือบจะเป็นลิซ่า",emoji:"⭐"},
+sun:{text:"◇ พี่โชนของทุกคน ◇<br>คุณทำให้โรงเรียนสงบและน่าอยู่ขึ้น ใจดีและน่าประทับใจ",emoji:"☀️"},
+shadow:{text:"◇ ข้าขอเป็นเงา อะตอมมิค ◇<br>เบียวกับอินโทรเวิท คุณพึ่งตัวเองไฟนอลบอส โหด",emoji:"🦇"},
+bl:{text:"◇ ดาราวาย ◇<br>เคมีระเบิด เสิร์ฟเก่ง ทุกคนเก็ท ปากหวาน ครับสุดสวย",emoji:"🌈"},
+normal:{text:"◇ แค่คนธรรมดา ◇<br>ในโลกวุ่นวายคุณเป็นคนธรรมดา เหมือน npc แต่เพราะมีคุณโลกเลยดำเนินได้",emoji:"🙏"}
 };
 
 let scores={star:0,sun:0,shadow:0,bl:0,normal:0};
@@ -228,11 +244,9 @@ let app=document.getElementById("app");
 if(current<questions.length){
 let q=questions[current];
 app.innerHTML=`<h3>${q.q}</h3>`;
-q.a.forEach((c,i)=>{
+q.a.forEach(c=>{
 let b=document.createElement("button");
 b.innerText=c[0];
-b.style.background=results[c[1]].color; // ✅ แก้แล้ว! ใช้สีตาม type
-b.style.color=c[1]==='shadow'?'white':'#333';
 b.onclick=(e)=>{
 sparkle(e.clientX,e.clientY);
 scores[c[1]]++;
@@ -243,18 +257,18 @@ app.appendChild(b);
 });
 }else{
 let max=Object.keys(scores).reduce((a,b)=>scores[a]>scores[b]?a:b);
-resultFX(max);
+resultFX(max); // เปลี่ยนพื้นหลังตรงนี้!
 
 const total=questions.length;
 const bar=s=> (s/total)*100;
 
 app.innerHTML=`
-<h2 style="background:${results[max].color};-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:1.5em;">ผลลัพธ์ของคุณ</h2>
+<h2 style="color:${max==='shadow'?'white':'#333'};font-size:1.5em;">ผลลัพธ์ของคุณ</h2>
 <div style="font-size:70px;margin:25px 0;">${results[max].emoji}</div>
 <p style="font-size:1.25em;padding:0 15px;">${results[max].text}</p>
 
 <div style="margin:30px 0;">
-<h4 style="margin:0 0 20px 0;color:#555;">📊 คะแนนของคุณ:</h4>
+<h4 style="margin:0 0 20px 0;color:${max==='shadow'?'#ddd':'#555'};">📊 คะแนนของคุณ:</h4>
 
 <div class="progress-row">
 <span class="progress-label">⭐</span>
