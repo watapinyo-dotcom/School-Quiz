@@ -14,18 +14,26 @@ body{
   justify-content:center;
   padding:20px;
   overflow:hidden;
+  position:relative;
 }
 
 .box{
   background:rgba(255,255,255,0.95);
   padding:20px;
+  padding-bottom:90px;
   border-radius:25px;
   max-width:420px;
   width:100%;
   text-align:center;
-  backdrop-filter:blur(10px);
+  position:relative;
+  z-index:2;
 }
 
+h2,h3{margin:0 0 20px 0;color:#333;}
+h3{font-size:1.3em;}
+p{font-size:1.1em;line-height:1.5;}
+
+/* ปุ่ม */
 button{
   width:100%;
   margin:10px 0;
@@ -33,11 +41,12 @@ button{
   border-radius:999px;
   border:none;
   background:white;
-  cursor:pointer;
   font-weight:bold;
+  font-size:16px;
   box-shadow:0 4px 15px rgba(0,0,0,0.1);
+  cursor:pointer;
+  transition:0.2s;
 }
-
 button:hover{transform:translateY(-2px);}
 button:active{transform:scale(0.96);}
 
@@ -47,46 +56,58 @@ button:active{transform:scale(0.96);}
   width:8px;height:8px;
   border-radius:50%;
   animation:pop 1s forwards;
+  pointer-events:none;
+  z-index:10;
 }
 @keyframes pop{
   0%{opacity:1;transform:scale(0.5);}
   100%{opacity:0;transform:scale(2);}
 }
 
-/* floating stars */
-.floating-star{
+/* ลอย */
+.float{
   position:fixed;
-  animation:floatUp linear forwards;
-  opacity:0.8;
+  animation:up linear forwards;
+  pointer-events:none;
+  z-index:1;
+  font-size:20px;
 }
-@keyframes floatUp{
-  0%{transform:translateY(100vh);opacity:0;}
+@keyframes up{
+  0%{transform:translateY(100vh) scale(0.8);opacity:0;}
   20%{opacity:1;}
-  100%{transform:translateY(-10vh);opacity:0;}
+  100%{transform:translateY(-20vh) scale(1.2);opacity:0;}
+}
+
+/* footer */
+.footer{
+  position:fixed;
+  bottom:0;
+  width:100%;
+  text-align:center;
+  z-index:1;
+}
+.footer img{
+  width:65%;
+  max-width:250px;
+  opacity:0.8;
 }
 
 /* progress */
-.progress-bar{margin:10px 0;text-align:left;}
-.progress-bar div{height:8px;background:#eee;border-radius:10px;margin-top:5px;}
+.progress{
+  background:#eee;
+  height:8px;
+  border-radius:10px;
+  margin:8px 0;
+  overflow:hidden;
+}
+.progress-fill{
+  height:100%;
+  transition:width 0.8s ease-out;
+}
 
-/* footer */
-.footer-img{
-  position:fixed;
-  bottom:0;
-  left:0;
-  width:100%;
-  text-align:center;
-  pointer-events:none;
-}
-.footer-img img{
-  width:100%;
-  max-width:420px;
-  opacity:0.9;
-  animation:float 3s ease-in-out infinite;
-}
-@keyframes float{
-  0%,100%{transform:translateY(0);}
-  50%{transform:translateY(-10px);}
+/* Responsive */
+@media (max-width:480px){
+  .box{padding:15px;padding-bottom:80px;}
 }
 </style>
 </head>
@@ -95,81 +116,77 @@ button:active{transform:scale(0.96);}
 
 <div class="box" id="app"></div>
 
-<div class="footer-img">
+<div class="footer">
 <img src="https://img1.pic.in.th/images/._20260422_195132_0000.th.png">
 </div>
 
 <script>
-// ⭐ ลอยดาว
-function spawnStar(){
-  const s=document.createElement("div");
-  const stars=["✨","⭐","💫","🌟"];
-  s.className="floating-star";
-  s.innerText=stars[Math.floor(Math.random()*stars.length)];
-  s.style.left=Math.random()*100+"vw";
-  s.style.animationDuration=(3+Math.random()*3)+"s";
-  document.body.appendChild(s);
-  setTimeout(()=>s.remove(),5000);
-}
-setInterval(spawnStar,400);
+// ⭐ ลอยตอนทำ
+setInterval(()=>{
+  let e=document.createElement("div");
+  e.className="float";
+  e.innerText=["✨","⭐","💫"][Math.floor(Math.random()*3)];
+  e.style.left=Math.random()*100+"vw";
+  e.style.animationDuration=(3+Math.random()*3)+"s";
+  document.body.appendChild(e);
+  setTimeout(()=>e.remove(),5000);
+},400);
 
 // ✨ sparkle
 function sparkle(x,y){
-  for(let i=0;i<10;i++){
+  for(let i=0;i<8;i++){
     let d=document.createElement("div");
     d.className="sparkle";
-    d.style.left=x+"px";
-    d.style.top=y+"px";
-    d.style.background=["#fff","#ff9ad5","#ffd6ec"][Math.floor(Math.random()*3)];
+    d.style.left=(x+Math.random()*40-20)+"px";
+    d.style.top=(y+Math.random()*40-20)+"px";
+    d.style.background="#ff9ad5";
     document.body.appendChild(d);
     setTimeout(()=>d.remove(),800);
   }
 }
 
-// ❓ QUESTIONS
+// 🎯 emoji ตอนเฉลย
+function resultFX(type){
+  const map={
+    star:["⭐","✨","🌟"],
+    sun:["☀️","💛","✨"],
+    shadow:["🦇","🌑"],
+    bl:["🌈","💖"],
+    normal:["🌱","🍃"]
+  };
+  for(let i=0;i<20;i++){
+    let e=document.createElement("div");
+    e.className="float";
+    e.innerText=map[type][Math.floor(Math.random()*map[type].length)];
+    e.style.left=Math.random()*100+"vw";
+    e.style.animationDuration="3s";
+    document.body.appendChild(e);
+    setTimeout(()=>e.remove(),3000);
+  }
+}
+
+// ❓ questions - 11 ข้อใหม่ล่าสุด!
 const questions=[
-{q:"1. ระหว่างทางเดินไปโรงเรียน คุณคิดว่าคุณจะเจออะไร",a:[
-["สาวคาบขนมปัง","star"],["อาจารย์สุดโหด","sun"],["หมาป่าใส่ฮู้ด","shadow"],["เพื่อนสมัยเด็กน่ารัก","bl"],["ถนน","normal"]
-]},
-{q:"2. เลือกที่นั่งของคุณ",a:[
-["คนเดียว","normal"],["คนที่ดูพึ่งได้","sun"],["สุ่ม กับใครนั่งก็เริ่ด","star"],["เพื่อนเก่า","bl"],["หลังห้อง ริมหน้าต่าง","shadow"]
-]},
-{q:"3. มีคนชวนกินข้าว",a:[
-["หึ","shadow"],["ไปสิครับ","sun"],["ไม่เป็นไรไปก็ได้แล้วแต่","normal"],["ก็ได้ค่ะ เริ่ดนะ","star"],["ไปดิ","bl"]
-]},
-{q:"4. ของตก",a:[
-["ยืนเฉย ๆ รอโชคชะตา","bl"],["เก็บเอง","normal"],["ขอความช่วยเหลือ","star"],["ยิ้มแล้วคุ้ยหาของ","sun"],["ตะโกนสุดเสียง","shadow"]
-]},
-{q:"5. เพื่อนโดนแกล้ง",a:[
-["เม้าแฟ่ด รู้ทั้งจังหวัด ลงทุกแฟลตฟอร์ม","star"],["ไม่ยุ่งดีกว่า วุ่นวาย","normal"],["ต่อยเลยละกัน หึ","shadow"],["ห้ามแล้วยิ้มให้ไม่เอาความรุนแรง","sun"],["มาหาฉันฉันจะช่วยเอง","bl"]
-]},
-{q:"6. เพื่อนชวนทำการบ้าน",a:[
-["คนเดียว หึ","shadow"],["โอเค","normal"],["ช่วยกันนะ","sun"],["เซลฟี่ก็สวยอะ มุมนี้สวย ไว้ก่อนน้า","star"],["เพื่อเธอทำได้ทุกอย่าง","bl"]
-]},
-{q:"7. เพื่อนชวนไปเที่ยว",a:[
-["อยู่บ้านนานแล้ว แอบเสียใจ","shadow"],["คาเฟ่ไหม ถ่ายรูปไหม รรรเริ่ดด","star"],["ขอพักนะเหนื่อย","normal"],["ไปหมดครับ ชอบอยู่กับเพื่อน","sun"],["เธอเลือกเลย ไปทุกที่ที่มีเธอ","bl"]
-]},
-{q:"8. แลกไอจี",a:[
-["ไม่เล่น แอบใช้รูปคาเนกิ","shadow"],["ได้ดิ","normal"],["ว้ายยยยยยยยยยยยยย","star"],["ครับแต่ไม่ค่อยได้เล่นนะ","sun"],["ฟอลแล้วเดมมา เดมมา","bl"]
-]},
-{q:"9. ครูไม่อยู่",a:[
-["ไลฟ์หน่อย สวัสดีโซเชี่ยลแคม","star"],["นั่งทำงาน","normal"],["หลับแต่แอบมอง","shadow"],["คุยกับเพื่อนเฮฮา","sun"],["แทรกตัวกับผู้คนโปรยคำหวาน","bl"]
-]},
-{q:"10. มีคนมาชอบ",a:[
-["เปิดตัวเลยไหม","star"],["เอ่อ..ขอบคุณ","normal"],["ยัยบ๊อง พ..พ..พูดอะไรเนี่ย ให้ตายเถอะ ฉันไม่ได้ชอบเธอแต่..รู้จัก..เห้ย ไม่ได้สิ","shadow"],["ขอบคุณนะ แต่เรามารู้จักกันก่อนดีไหม","sun"],["เราลองเป็นแฟนกันเลยได้ไหม ก็เพราะฉันเป็นคนไม่คุย คุยไม่เป๋น","bl"]
-]},
-{q:"11. งานกลุ่ม",a:[
-["ไม่มีใครเอาเข้ากลุ่ม...?","shadow"],["เล่นบ้างจริงจังบ้าง","star"],["คุณและผองเพื่อน งานกลุ่มแบบเดี่ยว","normal"],["หลีดเดอร์ ช่วยเหลือ น่าเชื่อถือ","sun"],["เดี๋ยวแอบทำส่วนของคนที่ชอบให้","bl"]
-]}
+{q:"1. ระหว่างทางเดินไปโรงเรียน คุณคิดว่าคุณจะเจออะไร",a:[["สาวคาบขนมปัง","star"],["อาจารย์สุดโหด","sun"],["หมาป่าใส่ฮู้ด","shadow"],["เพื่อนสมัยเด็กน่ารัก","bl"],["ถนน","normal"]]},
+{q:"2. เลือกที่นั่งของคุณ",a:[["คนเดียว","normal"],["คนที่ดูพึ่งได้","sun"],["สุ่ม กับใครนั่งก็เริ่ด","star"],["เพื่อนเก่า","bl"],["หลังห้อง ริมหน้าต่าง","shadow"]]},
+{q:"3. มีคนชวนกินข้าว",a:[["หึ","shadow"],["ไปสิครับ","sun"],["ไม่เป็นไรไปก็ได้แล้วแต่","normal"],["ก็ได้ค่ะ เริ่ดนะ","star"],["ไปดิ","bl"]]},
+{q:"4. ของตก",a:[["ยืนเฉย ๆ รอโชคชะตา","bl"],["เก็บเอง","normal"],["ขอความช่วยเหลือ","star"],["ยิ้มแล้วคุ้ยหาของ","sun"],["ตะโกนสุดเสียง","shadow"]]},
+{q:"5. เพื่อนโดนแกล้ง",a:[["เม้าแฟ่ด รู้ทั้งจังหวัด ลงทุกแฟลตฟอร์ม","star"],["ไม่ยุ่งดีกว่า วุ่นวาย","normal"],["ต่อยเลยละกัน หึ","shadow"],["ห้ามแล้วยิ้มให้ไม่เอาความรุนแรง","sun"],["มาหาฉันฉันจะช่วยเอง","bl"]]},
+{q:"6. เพื่อนชวนทำการบ้าน",a:[["คนเดียว หึ","shadow"],["โอเค","normal"],["ช่วยกันนะ","sun"],["เซลฟี่ก็สวยอะ มุมนี้สวย ไว้ก่อนน้า","star"],["เพื่อเธอทำได้ทุกอย่าง","bl"]]},
+{q:"7. เพื่อนชวนไปเที่ยว",a:[["อยู่บ้านนานแล้ว แอบเสียใจ","shadow"],["คาเฟ่ไหม ถ่ายรูปไหม รรรเริ่ดด","star"],["ขอพักนะเหนื่อย","normal"],["ไปหมดครับ ชอบอยู่กับเพื่อน","sun"],["เธอเลือกเลย ไปทุกที่ที่มีเธอ","bl"]]},
+{q:"8. แลกไอจี",a:[["ไม่เล่น แอบใช้รูปคาเนกิ","shadow"],["ได้ดิ","normal"],["ว้ายยยยยยยยยยยยยย","star"],["ครับแต่ไม่ค่อยได้เล่นนะ","sun"],["ฟอลแล้วเดมมา เดมมา","bl"]]},
+{q:"9. ครูไม่อยู่",a:[["ไลฟ์หน่อย สวัสดีโซเชี่ยลแคม","star"],["นั่งทำงาน","normal"],["หลับแต่แอบมอง","shadow"],["คุยกับเพื่อนเฮฮา","sun"],["แทรกตัวกับผู้คนโปรยคำหวาน","bl"]]},
+{q:"10. มีคนมาชอบ",a:[["เปิดตัวเลยไหม","star"],["เอ่อ..ขอบคุณ","normal"],["ยัยบ๊อง พ..พ..พูดอะไรเนี่ย ให้ตายเถอะ ฉันไม่ได้ชอบเธอแต่..รู้จัก..เห้ย ไม่ได้สิ","shadow"],["ขอบคุณนะ แต่เรามารู้จักกันก่อนดีไหม","sun"],["เราลองเป็นแฟนกันเลยได้ไหม ก็เพราะฉันเป็นคนไม่คุย คุยไม่เป๋น","bl"]]},
+{q:"11. งานกลุ่ม",a:[["ไม่มีใครเอาเข้ากลุ่ม...?","shadow"],["เล่นบ้างจริงจังบ้าง","star"],["คุณและผองเพื่อน งานกลุ่มแบบเดี่ยว","normal"],["หลีดเดอร์ ช่วยเหลือ น่าเชื่อถือ","sun"],["เดี๋ยวแอบทำส่วนของคนที่ชอบให้","bl"]]}
 ];
 
-// 🎯 RESULTS (เป๊ะ)
+// 🎯 results
 const results={
-star:{text:"◇ ดาวหกแฉก ◇<br>คุณเป็นดาวเด่น ค้ำฟ้า เพราะสร้างด้วยตัวเอง ยอดฟอลไอจีเกือบจะเป็นลิซ่าไม่รู้ว่าปั้นยอดมาแค่ไหนแต่เรียกได้ว่าเป็นอินฟลูสายเม้าท์ฉ่ำ",color:"pink"},
-sun:{text:"◇ พี่โชนของทุกคน ◇<br>คุณทำให้โรงเรียนสงบและน่าอยู่ขึ้น ใจดีและน่าประทับใจ คุณเด่นคุณดัง ไม่ว่าจะตรงไหนคนก็ชอบคุณ",color:"#ffe066"},
-shadow:{text:"◇ ข้าขอเป็นเงา อะตอมมิค ◇<br>เบียวกับอินโทรเวิทมีเส้นคั่นที่หนาตึ้บ แต่คุณน่ะ ไม่ได้เบียวแค่เป็นส่วนเดียวกับความมืด โลกก็แบบนี้ คุณพึ่งตัวเองไฟนอลบอส โหด",color:"#444"},
-bl:{text:"◇ ดาราวาย ◇<br>เคมีระเบิด เสิร์ฟเก่ง ทุกคนเก็ท ปากหวาน เสยผม กล้องสามจับหมด ครับสุดสวย",color:"rainbow"},
-normal:{text:"◇ แค่คนธรรมดา ◇<br>ในโลกวุ่นวายคุณเป็นคนธรรมดาที่แทบจะปลงกับทุกอย่าง ขออยู่คนเดียว ไม่เอาใครแล้ว เหมือน npc แต่เพราะมีคุณโลกเลยดำเนินได้",color:"#ccc"}
+star:{text:"◇ ดาวหกแฉก ◇<br>คุณเป็นดาวเด่น ค้ำฟ้า เพราะสร้างด้วยตัวเอง ยอดฟอลไอจีเกือบจะเป็นลิซ่า",emoji:"⭐",color:"#FFD700"},
+sun:{text:"◇ พี่โชนของทุกคน ◇<br>คุณทำให้โรงเรียนสงบและน่าอยู่ขึ้น ใจดีและน่าประทับใจ",emoji:"☀️",color:"#87CEFA"},
+shadow:{text:"◇ ข้าขอเป็นเงา อะตอมมิค ◇<br>เบียวกับอินโทรเวิท คุณพึ่งตัวเองไฟนอลบอส โหด",emoji:"🦇",color:"#6a0dad"},
+bl:{text:"◇ ดาราวาย ◇<br>เคมีระเบิด เสิร์ฟเก่ง ทุกคนเก็ท ปากหวาน ครับสุดสวย",emoji:"🌈",color:"rainbow"},
+normal:{text:"◇ แค่คนธรรมดา ◇<br>ในโลกวุ่นวายคุณเป็นคนธรรมดา เหมือน npc แต่เพราะมีคุณโลกเลยดำเนินได้",emoji:"🙏",color:"#4CAF50"}
 };
 
 let scores={star:0,sun:0,shadow:0,bl:0,normal:0};
@@ -181,53 +198,40 @@ let app=document.getElementById("app");
 if(current<questions.length){
 let q=questions[current];
 app.innerHTML=`<h3>${q.q}</h3>`;
-q.a.forEach(choice=>{
-let btn=document.createElement("button");
-btn.innerText=choice[0];
-btn.onclick=(e)=>{
+q.a.forEach(c=>{
+let b=document.createElement("button");
+b.innerText=c[0];
+b.onclick=(e)=>{
 sparkle(e.clientX,e.clientY);
-scores[choice[1]]++;
+scores[c[1]]++;
 current++;
 render();
 };
-app.appendChild(btn);
+app.appendChild(b);
 });
 }else{
-
 let max=Object.keys(scores).reduce((a,b)=>scores[a]>scores[b]?a:b);
-const total=questions.length;
-const bar=(s)=> (s/total)*100;
+resultFX(max);
 
-if(results[max].color==="rainbow"){
-document.body.style.background="linear-gradient(270deg,red,orange,yellow,green,blue,violet)";
-document.body.style.backgroundSize="400% 400%";
-document.body.style.animation="rainbow 5s infinite";
-}else{
-document.body.style.background=results[max].color;
-}
+const total=questions.length;
+const bar=s=> (s/total)*100;
 
 app.innerHTML=`
 <h2>ผลลัพธ์ของคุณ</h2>
-<p>${results[max].text}</p>
+<div style="font-size:64px;margin:20px 0;">${results[max].emoji}</div>
+<p style="font-size:1.2em;">${results[max].text}</p>
 
-<h4 style="text-align:left">คะแนน</h4>
+<div style="margin:25px 0;">
+<h4 style="margin:0 0 15px 0;">📊 คะแนนของคุณ:</h4>
 
-<div class="progress-bar">⭐ ${scores.star}
-<div><div style="width:${bar(scores.star)}%;background:pink;height:100%"></div></div></div>
+<div>⭐ ${scores.star}<div class="progress"><div class="progress-fill" style="width:${bar(scores.star)}%;background:#FFD700;"></div></div></div>
+<div>☀️ ${scores.sun}<div class="progress"><div class="progress-fill" style="width:${bar(scores.sun)}%;background:#87CEFA;"></div></div></div>
+<div>🦇 ${scores.shadow}<div class="progress"><div class="progress-fill" style="width:${bar(scores.shadow)}%;background:#6a0dad;"></div></div></div>
+<div>🌈 ${scores.bl}<div class="progress"><div class="progress-fill" style="width:${bar(scores.bl)}%;background:linear-gradient(90deg,red,orange,yellow,green,blue,violet);"></div></div></div>
+<div>🙏 ${scores.normal}<div class="progress"><div class="progress-fill" style="width:${bar(scores.normal)}%;background:#4CAF50;"></div></div></div>
+</div>
 
-<div class="progress-bar">☀️ ${scores.sun}
-<div><div style="width:${bar(scores.sun)}%;background:#ffe066;height:100%"></div></div></div>
-
-<div class="progress-bar">🌑 ${scores.shadow}
-<div><div style="width:${bar(scores.shadow)}%;background:#666;height:100%"></div></div></div>
-
-<div class="progress-bar">💖 ${scores.bl}
-<div><div style="width:${bar(scores.bl)}%;background:violet;height:100%"></div></div></div>
-
-<div class="progress-bar">🌱 ${scores.normal}
-<div><div style="width:${bar(scores.normal)}%;background:#ccc;height:100%"></div></div></div>
-
-<button onclick="location.reload()">เล่นใหม่</button>
+<button onclick="location.reload()" style="background:#ff6b9d;color:white;font-size:18px;">🎮 เล่นใหม่</button>
 `;
 }
 }
