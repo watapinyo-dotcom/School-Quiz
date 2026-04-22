@@ -1,10 +1,8 @@
-<!-- test -->
 <!DOCTYPE html>
 <html lang="th">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#ffd6ec">
 <title>คุณเป็นใครในโรงเรียนนี้?</title>
 
 <style>
@@ -16,7 +14,6 @@ body{
   justify-content:center;
   padding:20px;
   overflow:hidden;
-  height:100vh;
 }
 
 .box{
@@ -26,14 +23,8 @@ body{
   max-width:420px;
   width:100%;
   text-align:center;
-  max-height:90vh;
-  overflow-y:auto;
   backdrop-filter:blur(10px);
 }
-
-h2,h3{margin:0 0 20px 0;color:#333;}
-h3{font-size:1.3em;}
-p{font-size:1.1em;line-height:1.5;}
 
 button{
   width:100%;
@@ -44,80 +35,75 @@ button{
   background:white;
   cursor:pointer;
   font-weight:bold;
-  font-size:16px;
   box-shadow:0 4px 15px rgba(0,0,0,0.1);
-  transition:0.2s;
 }
 
-button:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.15);}
+button:hover{transform:translateY(-2px);}
 button:active{transform:scale(0.96);}
 
-/* ✨ sparkle */
+/* sparkle */
 .sparkle{
   position:fixed;
-  width:8px;
-  height:8px;
+  width:8px;height:8px;
   border-radius:50%;
   animation:pop 1s forwards;
-  pointer-events:none;
-  z-index:999;
 }
 @keyframes pop{
   0%{opacity:1;transform:scale(0.5);}
   100%{opacity:0;transform:scale(2);}
 }
 
-/* 🌟 floating stars */
+/* floating stars */
 .floating-star{
   position:fixed;
-  font-size:18px;
-  pointer-events:none;
   animation:floatUp linear forwards;
   opacity:0.8;
-  z-index:1;
 }
-
 @keyframes floatUp{
-  0%{transform:translateY(100vh) scale(0.8);opacity:0;}
+  0%{transform:translateY(100vh);opacity:0;}
   20%{opacity:1;}
-  100%{transform:translateY(-10vh) scale(1.3);opacity:0;}
+  100%{transform:translateY(-10vh);opacity:0;}
 }
 
-/* 🌈 rainbow */
-@keyframes rainbow{
-  0%{background-position:0%}
-  50%{background-position:100%}
-  100%{background-position:0%}
-}
+/* progress */
+.progress-bar{margin:10px 0;text-align:left;}
+.progress-bar div{height:8px;background:#eee;border-radius:10px;margin-top:5px;}
 
-/* Progress bars */
-.progress-bar{
-  margin:15px 0;
-  text-align:left;
+/* footer */
+.footer-img{
+  position:fixed;
+  bottom:0;
+  left:0;
+  width:100%;
+  text-align:center;
+  pointer-events:none;
 }
-.progress-bar div{
-  height:8px;
-  border-radius:10px;
-  transition:0.8s ease-out;
+.footer-img img{
+  width:100%;
+  max-width:420px;
+  opacity:0.9;
+  animation:float 3s ease-in-out infinite;
 }
-
-/* Responsive */
-@media (max-width: 480px) {
-  .box { padding:15px; margin:10px; }
-  button { padding:12px; }
-  h3 { font-size:1.2em; }
+@keyframes float{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-10px);}
 }
 </style>
 </head>
 
 <body>
+
 <div class="box" id="app"></div>
 
+<div class="footer-img">
+<img src="https://img1.pic.in.th/images/._20260422_195132_0000.th.png">
+</div>
+
 <script>
-// ⭐ floating stars
+// ⭐ ลอยดาว
 function spawnStar(){
-  const stars=["⭐","✨","💫","🌟","🫧","🌸"];
-  let s=document.createElement("div");
+  const s=document.createElement("div");
+  const stars=["✨","⭐","💫","🌟"];
   s.className="floating-star";
   s.innerText=stars[Math.floor(Math.random()*stars.length)];
   s.style.left=Math.random()*100+"vw";
@@ -127,87 +113,63 @@ function spawnStar(){
 }
 setInterval(spawnStar,400);
 
-// ✨ sparkle click
+// ✨ sparkle
 function sparkle(x,y){
   for(let i=0;i<10;i++){
     let d=document.createElement("div");
     d.className="sparkle";
     d.style.left=x+"px";
     d.style.top=y+"px";
-    d.style.background=["#fff","#ff9ad5","#ffe08a"][Math.floor(Math.random()*3)];
+    d.style.background=["#fff","#ff9ad5","#ffd6ec"][Math.floor(Math.random()*3)];
     document.body.appendChild(d);
     setTimeout(()=>d.remove(),800);
   }
 }
 
-// 📌 QUESTIONS
-const questions = [
+// ❓ QUESTIONS
+const questions=[
 {q:"1. ระหว่างทางเดินไปโรงเรียน คุณคิดว่าคุณจะเจออะไร",a:[
-["สาวคาบขนมปัง","star"],["อาจารย์ วินัย สุดโหด","sun"],["หมาป่าใส่ฮู้ด","shadow"],["เพื่อนสมัยเด็กน่ารัก","bl"],["ถนน","normal"]
+["สาวคาบขนมปัง","star"],["อาจารย์สุดโหด","sun"],["หมาป่าใส่ฮู้ด","shadow"],["เพื่อนสมัยเด็กน่ารัก","bl"],["ถนน","normal"]
 ]},
 {q:"2. เลือกที่นั่งของคุณ",a:[
-["นั่งคนเดียว","normal"],["คนดูดี ดูเป็นงาน ดูเรียนเก่ง","sun"],["สุ่มไปนั่งกับใครเริ่ดหมด","star"],["เพื่อนสมัยเด็กสุดน่ารัก","bl"],["หลังห้อง ริมหน้าต่าง","shadow"]
+["คนเดียว","normal"],["คนที่ดูพึ่งได้","sun"],["สุ่ม กับใครนั่งก็เริ่ด","star"],["เพื่อนเก่า","bl"],["หลังห้อง ริมหน้าต่าง","shadow"]
 ]},
 {q:"3. มีคนชวนกินข้าว",a:[
-["หึ","shadow"],["ไปสิครับ","sun"],["ไม่เป็นไรไปก็ได้แล้วแต่","normal"],["ก็ได้ค่ะ จอย ๆ เดี๋ยวเลี้ยงเอง","star"],["ไปทุกที่ที่มีเธออยู่แล้ว","bl"]
+["หึ","shadow"],["ไปสิครับ","sun"],["ไม่เป็นไรไปก็ได้แล้วแต่","normal"],["ก็ได้ค่ะ เริ่ดนะ","star"],["ไปดิ","bl"]
 ]},
-{q:"4. ถ้าของรักคุณตก",a:[
+{q:"4. ของตก",a:[
 ["ยืนเฉย ๆ รอโชคชะตา","bl"],["เก็บเอง","normal"],["ขอความช่วยเหลือ","star"],["ยิ้มแล้วคุ้ยหาของ","sun"],["ตะโกนสุดเสียง","shadow"]
 ]},
-{q:"5. เพื่อนโดนแกล้ง ทำไงดี",a:[
-["เม้าแฟ่ด รู้ทั้งจังหวัด ลงทุกแฟลตฟอร์ม","star"],["ไม่ยุ่งดีกว่า วุ่นวาย","normal"],["ต่อยเลยละกัน หึ","shadow"],["ห้ามแล้วยิ้มให้ไม่เอาความรุนแรง","sun"],["มาหาฉันฉันจะช่วยเองนะ มายเบบี๋","bl"]
+{q:"5. เพื่อนโดนแกล้ง",a:[
+["เม้าแฟ่ด รู้ทั้งจังหวัด ลงทุกแฟลตฟอร์ม","star"],["ไม่ยุ่งดีกว่า วุ่นวาย","normal"],["ต่อยเลยละกัน หึ","shadow"],["ห้ามแล้วยิ้มให้ไม่เอาความรุนแรง","sun"],["มาหาฉันฉันจะช่วยเอง","bl"]
 ]},
 {q:"6. เพื่อนชวนทำการบ้าน",a:[
-["คนเดียว หึ","shadow"],["โอเค","normal"],["ช่วยกันนะ เยอะ ๆ สนุกดี","sun"],["แป๊บ ๆ นะเซลฟี่ก่อน มุมนี้มันสวยอะ","star"],["เพื่อเธอทำได้ทุกอย่าง","bl"]
+["คนเดียว หึ","shadow"],["โอเค","normal"],["ช่วยกันนะ","sun"],["เซลฟี่ก็สวยอะ มุมนี้สวย ไว้ก่อนน้า","star"],["เพื่อเธอทำได้ทุกอย่าง","bl"]
 ]},
 {q:"7. เพื่อนชวนไปเที่ยว",a:[
 ["อยู่บ้านนานแล้ว แอบเสียใจ","shadow"],["คาเฟ่ไหม ถ่ายรูปไหม รรรเริ่ดด","star"],["ขอพักนะเหนื่อย","normal"],["ไปหมดครับ ชอบอยู่กับเพื่อน","sun"],["เธอเลือกเลย ไปทุกที่ที่มีเธอ","bl"]
 ]},
 {q:"8. แลกไอจี",a:[
-["ไม่เล่น ใช้รูปอายาโนะโคจิ","shadow"],["ได้ดิ","normal"],["ว้ายยยยยยยยยยยยยย","star"],["ครับแต่ไม่ค่อยได้เล่นนะ","sun"],["เดมมา เดมมา","bl"]
+["ไม่เล่น แอบใช้รูปคาเนกิ","shadow"],["ได้ดิ","normal"],["ว้ายยยยยยยยยยยยยย","star"],["ครับแต่ไม่ค่อยได้เล่นนะ","sun"],["ฟอลแล้วเดมมา เดมมา","bl"]
 ]},
 {q:"9. ครูไม่อยู่",a:[
 ["ไลฟ์หน่อย สวัสดีโซเชี่ยลแคม","star"],["นั่งทำงาน","normal"],["หลับแต่แอบมอง","shadow"],["คุยกับเพื่อนเฮฮา","sun"],["แทรกตัวกับผู้คนโปรยคำหวาน","bl"]
 ]},
 {q:"10. มีคนมาชอบ",a:[
-["เปิดตัวเลยสิซิส นี่ค่ะแฟนฉัน","star"],["เฉย ๆ ขอบคุณ","normal"],["หึ ขอบใจ ไปละกัน","shadow"],["คุยดี ๆ ขอบคุณนะครับ เราอาจจะยังไม่ได้ชอบเธอแต่รู้จักกันไปก่อนนะ","sun"],["หวานครับ จัดเธียร์ เปิดตัวเลยครับ เราลองเป็นแฟนกันเลยได้ไหมเพราะฉันมันเป็นคนไม่คุยคุยไม่เป็น","bl"]
+["เปิดตัวเลยไหม","star"],["เอ่อ..ขอบคุณ","normal"],["ยัยบ๊อง พ..พ..พูดอะไรเนี่ย ให้ตายเถอะ ฉันไม่ได้ชอบเธอแต่..รู้จัก..เห้ย ไม่ได้สิ","shadow"],["ขอบคุณนะ แต่เรามารู้จักกันก่อนดีไหม","sun"],["เราลองเป็นแฟนกันเลยได้ไหม ก็เพราะฉันเป็นคนไม่คุย คุยไม่เป๋น","bl"]
+]},
+{q:"11. งานกลุ่ม",a:[
+["ไม่มีใครเอาเข้ากลุ่ม...?","shadow"],["เล่นบ้างจริงจังบ้าง","star"],["คุณและผองเพื่อน งานกลุ่มแบบเดี่ยว","normal"],["หลีดเดอร์ ช่วยเหลือ น่าเชื่อถือ","sun"],["เดี๋ยวแอบทำส่วนของคนที่ชอบให้","bl"]
 ]}
 ];
-{q:"9. ทำงานกลุ่มล่ะ",a:[
-["ก็ต้องจริงจังบ้างเล่นบ้าง","star"],["งานกลุ่มรูปแบบเดี่ยว","normal"],["ไม่มีคนชวนเข้ากลุ่ม","shadow"],["หัวหน้า หลีดเดอร์ เป็นผู้นำ จัดแจงทุกรายละเอียด","sun"],["เดี๋ยวผมทำแทนทุกคนเองครับเบบี๋","bl"]
-]},
-// 🎯 RESULTS + Emoji
-const results = {
-sun:{
-html:`<div style="font-size:64px;margin-bottom:15px">☀️</div>
-<h3>◇ พี่โชนของทุกคน ◇</h3>
-<p>คุณทำให้โรงเรียนสงบและน่าอยู่ขึ้น ใจดีและน่าประทับใจ คุณเด่นคุณดัง ไม่ว่าจะตรงไหนคนก็ชอบคุณ</p>`,
-color:"linear-gradient(135deg,#87CEFA,#B0E0E6)"
-},
-star:{
-html:`<div style="font-size:64px;margin-bottom:15px">⭐</div>
-<h3>◇ ดาวหกแฉก ◇</h3>
-<p>คุณเป็นดาวเด่น ค้ำฟ้า เพราะสร้างด้วยตัวเอง ยอดฟอลไอจีเกือบจะเป็นลิซ่าไม่รู้ว่าปั้นยอดมาแค่ไหนแต่เรียกได้ว่าเป็นอินฟลูสายเม้าท์ฉ่ำ</p>`,
-color:"#FFD700"
-},
-shadow:{
-html:`<div style="font-size:64px;margin-bottom:15px">🦇</div>
-<h3>◇ ข้าขอเป็นเงา อะตอมมิค ◇</h3>
-<p>เบียวกับอินโทรเวิทมีเส้นคั่นที่หนาตึ้บ แต่คุณน่ะ ไม่ได้เบียวแค่เป็นส่วนเดียวกับความมืด โลกก็แบบนี้ คุณพึ่งตัวเองไฟนอลบอส โหด</p>`,
-color:"linear-gradient(135deg,#1a001f,#2d0033)"
-},
-normal:{
-html:`<div style="font-size:64px;margin-bottom:15px">🙏</div>
-<h3>◇ แค่คนธรรมดา ◇</h3>
-<p>ในโลกวุ่นวายคุณเป็นคนธรรมดาที่แทบจะปลงกับทุกอย่าง ขออยู่คนเดียว ไม่เอาใครแล้ว เหมือน npc แต่เพราะมีคุณโลกเลยดำเนินได้</p>`,
-color:"#4CAF50"
-},
-bl:{
-html:`<div style="font-size:64px;margin-bottom:15px">🌈</div>
-<h3>◇ ดาราวาย ◇</h3>
-<p>เคมีระเบิด เสิร์ฟเก่ง ทุกคนเก็ท ปากหวาน เสยผม กล้องสามจับหมด ครับสุดสวย</p>`,
-color:"rainbow"
-}
+
+// 🎯 RESULTS (เป๊ะ)
+const results={
+star:{text:"◇ ดาวหกแฉก ◇<br>คุณเป็นดาวเด่น ค้ำฟ้า เพราะสร้างด้วยตัวเอง ยอดฟอลไอจีเกือบจะเป็นลิซ่าไม่รู้ว่าปั้นยอดมาแค่ไหนแต่เรียกได้ว่าเป็นอินฟลูสายเม้าท์ฉ่ำ",color:"pink"},
+sun:{text:"◇ พี่โชนของทุกคน ◇<br>คุณทำให้โรงเรียนสงบและน่าอยู่ขึ้น ใจดีและน่าประทับใจ คุณเด่นคุณดัง ไม่ว่าจะตรงไหนคนก็ชอบคุณ",color:"#ffe066"},
+shadow:{text:"◇ ข้าขอเป็นเงา อะตอมมิค ◇<br>เบียวกับอินโทรเวิทมีเส้นคั่นที่หนาตึ้บ แต่คุณน่ะ ไม่ได้เบียวแค่เป็นส่วนเดียวกับความมืด โลกก็แบบนี้ คุณพึ่งตัวเองไฟนอลบอส โหด",color:"#444"},
+bl:{text:"◇ ดาราวาย ◇<br>เคมีระเบิด เสิร์ฟเก่ง ทุกคนเก็ท ปากหวาน เสยผม กล้องสามจับหมด ครับสุดสวย",color:"rainbow"},
+normal:{text:"◇ แค่คนธรรมดา ◇<br>ในโลกวุ่นวายคุณเป็นคนธรรมดาที่แทบจะปลงกับทุกอย่าง ขออยู่คนเดียว ไม่เอาใครแล้ว เหมือน npc แต่เพราะมีคุณโลกเลยดำเนินได้",color:"#ccc"}
 };
 
 let scores={star:0,sun:0,shadow:0,bl:0,normal:0};
@@ -219,7 +181,6 @@ let app=document.getElementById("app");
 if(current<questions.length){
 let q=questions[current];
 app.innerHTML=`<h3>${q.q}</h3>`;
-
 q.a.forEach(choice=>{
 let btn=document.createElement("button");
 btn.innerText=choice[0];
@@ -231,11 +192,11 @@ render();
 };
 app.appendChild(btn);
 });
-
 }else{
-let max = Object.keys(scores).reduce((a,b)=>scores[a]>scores[b]?a:b);
-const total = questions.length;
-const bar = (s) => (s / total) * 100;
+
+let max=Object.keys(scores).reduce((a,b)=>scores[a]>scores[b]?a:b);
+const total=questions.length;
+const bar=(s)=> (s/total)*100;
 
 if(results[max].color==="rainbow"){
 document.body.style.background="linear-gradient(270deg,red,orange,yellow,green,blue,violet)";
@@ -247,47 +208,32 @@ document.body.style.background=results[max].color;
 
 app.innerHTML=`
 <h2>ผลลัพธ์ของคุณ</h2>
-${results[max].html}
+<p>${results[max].text}</p>
 
-<div style="margin-top:20px;">
-<h4 style="text-align:left;margin:0 0 10px 0">คะแนนของคุณ:</h4>
-<div class="progress-bar">
-⭐ ดาว ${scores.star}
-<div style="background:#eee;height:8px;border-radius:10px;margin-top:5px">
-<div style="width:${bar(scores.star)}%;height:100%;background:#FFD700;border-radius:10px"></div>
-</div></div>
+<h4 style="text-align:left">คะแนน</h4>
 
-<div class="progress-bar">
-☀️ พี่โชน ${scores.sun}
-<div style="background:#eee;height:8px;border-radius:10px;margin-top:5px">
-<div style="width:${bar(scores.sun)}%;height:100%;background:#87CEFA;border-radius:10px"></div>
-</div></div>
+<div class="progress-bar">⭐ ${scores.star}
+<div><div style="width:${bar(scores.star)}%;background:pink;height:100%"></div></div></div>
 
-<div class="progress-bar">
-🦇 เงา ${scores.shadow}
-<div style="background:#eee;height:8px;border-radius:10px;margin-top:5px">
-<div style="width:${bar(scores.shadow)}%;height:100%;background:#6a0dad;border-radius:10px"></div>
-</div></div>
+<div class="progress-bar">☀️ ${scores.sun}
+<div><div style="width:${bar(scores.sun)}%;background:#ffe066;height:100%"></div></div></div>
 
-<div class="progress-bar">
-🌈 ดาราวาย ${scores.bl}
-<div style="background:#eee;height:8px;border-radius:10px;margin-top:5px">
-<div style="width:${bar(scores.bl)}%;height:100%;background:linear-gradient(90deg,red,orange,yellow,green,blue,violet);border-radius:10px"></div>
-</div></div>
+<div class="progress-bar">🌑 ${scores.shadow}
+<div><div style="width:${bar(scores.shadow)}%;background:#666;height:100%"></div></div></div>
 
-<div class="progress-bar">
-🙏 คนธรรมดา ${scores.normal}
-<div style="background:#eee;height:8px;border-radius:10px;margin-top:5px">
-<div style="width:${bar(scores.normal)}%;height:100%;background:#4CAF50;border-radius:10px"></div>
-</div></div>
-</div>
+<div class="progress-bar">💖 ${scores.bl}
+<div><div style="width:${bar(scores.bl)}%;background:violet;height:100%"></div></div></div>
 
-<button onclick="location.reload()" style="background:#ff6b9d;color:white;margin-top:20px;">🎮 เล่นใหม่</button>
+<div class="progress-bar">🌱 ${scores.normal}
+<div><div style="width:${bar(scores.normal)}%;background:#ccc;height:100%"></div></div></div>
+
+<button onclick="location.reload()">เล่นใหม่</button>
 `;
 }
 }
 
 render();
 </script>
+
 </body>
 </html>
