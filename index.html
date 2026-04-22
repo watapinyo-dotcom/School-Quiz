@@ -270,58 +270,61 @@ render();
 app.appendChild(b);
 });
 }else{
-let max=Object.keys(scores).reduce((a,b)=>scores[a]>scores[b]?a:b);
-resultFX(max); // เปลี่ยนพื้นหลังตรงนี้!
+  let max = Object.keys(scores).reduce((a,b)=>scores[a]>scores[b]?a:b);
+  resultFX(max);
 
-const total=questions.length;
-const bar=s=> (s/total)*100;
+  const total = questions.length;
+  const bar = s => (s / total) * 100;
 
-app.innerHTML=`
-<h2 style="color:${max==='shadow'?'white':'#333'};font-size:1.5em;">ผลลัพธ์ของคุณ</h2>
-<div style="font-size:70px;margin:25px 0;">${results[max].emoji}</div>
-<p style="font-size:1.25em;padding:0 15px;">${results[max].text}</p>
+  app.innerHTML = `
+    <div class="result-page">
+      <div class="result-card">
+        <h2 class="result-title">ผลลัพธ์ของคุณ</h2>
 
-<div style="margin:30px 0;">
-<h4 style="margin:0 0 20px 0;color:${max==='shadow'?'#ddd':'#555'};">📊 คะแนนของคุณ:</h4>
+        <div class="result-emoji">${results[max].emoji}</div>
 
-<div class="progress-row">
-<span class="progress-label">⭐</span>
-<span class="progress-score">${scores.star}</span>
-<div class="progress-container"><div class="progress-fill" style="width:${bar(scores.star)}%;background:#FFD700;"></div></div>
-</div>
+        <h3 class="result-name">${results[max].text.split("<br>")[0]}</h3>
+        <p class="result-desc">${results[max].text.split("<br>")[1]}</p>
 
-<div class="progress-row">
-<span class="progress-label">☀️</span>
-<span class="progress-score">${scores.sun}</span>
-<div class="progress-container"><div class="progress-fill" style="width:${bar(scores.sun)}%;background:#87CEFA;"></div></div>
-</div>
+        <div class="score-title">คะแนนของคุณ:</div>
 
-<div class="progress-row">
-<span class="progress-label">🦇</span>
-<span class="progress-score">${scores.shadow}</span>
-<div class="progress-container"><div class="progress-fill" style="width:${bar(scores.shadow)}%;background:#6a0dad;"></div></div>
-</div>
+        <div class="progress-row">
+          <span class="progress-label">⭐ ดาว ${scores.star}</span>
+          <div class="progress-container">
+            <div class="progress-fill star" style="width:${bar(scores.star)}%"></div>
+          </div>
+        </div>
 
-<div class="progress-row">
-<span class="progress-label">🌈</span>
-<span class="progress-score">${scores.bl}</span>
-<div class="progress-container"><div class="progress-fill" style="width:${bar(scores.bl)}%;background:linear-gradient(90deg,red,orange,yellow,green,blue,violet);"></div></div>
-</div>
+        <div class="progress-row">
+          <span class="progress-label">☀️ พี่โชน ${scores.sun}</span>
+          <div class="progress-container">
+            <div class="progress-fill sun" style="width:${bar(scores.sun)}%"></div>
+          </div>
+        </div>
 
-<div class="progress-row">
-<span class="progress-label">🙏</span>
-<span class="progress-score">${scores.normal}</span>
-<div class="progress-container"><div class="progress-fill" style="width:${bar(scores.normal)}%;background:#4CAF50;"></div></div>
-</div>
-</div>
+        <div class="progress-row">
+          <span class="progress-label">🦇 เงา ${scores.shadow}</span>
+          <div class="progress-container">
+            <div class="progress-fill shadow" style="width:${bar(scores.shadow)}%"></div>
+          </div>
+        </div>
 
-<button onclick="location.reload()" style="background:linear-gradient(180deg,#ff1493,#ff69b4);color:white;font-size:18px;font-weight:bold;padding:16px;box-shadow:0 8px 25px rgba(255,20,147,0.4);">🎮 เล่นใหม่</button>
-`;
+        <div class="progress-row">
+          <span class="progress-label">🌈 ดาราวาย ${scores.bl}</span>
+          <div class="progress-container">
+            <div class="progress-fill bl" style="width:${bar(scores.bl)}%"></div>
+          </div>
+        </div>
+
+        <div class="progress-row">
+          <span class="progress-label">🙏 คนธรรมดา ${scores.normal}</span>
+          <div class="progress-container">
+            <div class="progress-fill normal" style="width:${bar(scores.normal)}%"></div>
+          </div>
+        </div>
+
+        <button class="restart-btn" onclick="location.reload()">🎮 เล่นใหม่</button>
+      </div>
+    </div>
+  `;
 }
-}
-
-render();
-</script>
-
-</body>
-</html>
